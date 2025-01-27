@@ -11,7 +11,7 @@ whether you want to follow PHP coding standards as defined in the PSR-1, PSR-2, 
 or other community driven ones like the Symfony one.
 You can **also** define your (team's) style through configuration.
 
-It can modernize your code (like converting the `pow` function to the `**` operator on PHP 5.6)
+It can modernize your code (like converting the ``pow`` function to the ``**`` operator on PHP 5.6)
 and (micro) optimize it.
 
 If you are already using a linter to identify coding standards problems in your
@@ -20,11 +20,11 @@ projects. This tool does not only detect them, but also fixes them for you.
 
 ## Supported PHP Versions
 
-- PHP 7.4
-- PHP 8.0
-- PHP 8.1
-- PHP 8.2
-- PHP 8.3
+* PHP 7.4
+* PHP 8.0
+* PHP 8.1
+* PHP 8.2
+* PHP 8.3
 
 > **Note**
 > Each new PHP version requires a huge effort to support the new syntax.
@@ -38,37 +38,16 @@ projects. This tool does not only detect them, but also fixes them for you.
 
 ### Installation
 
-The recommended way to install PHP CS Fixer is to use [Composer](https://getcomposer.org/download/)
-in a dedicated `composer.json` file in your project, for example in the
-`tools/php-cs-fixer` directory:
-
-```console
-mkdir -p tools/php-cs-fixer
-composer require --working-dir=tools/php-cs-fixer friendsofphp/php-cs-fixer
-```
-
-Or using the main `composer.json`:
+The recommended way to install PHP CS Fixer is to use [Composer](https://getcomposer.org/download/):
 
 ```console
 composer require --dev friendsofphp/php-cs-fixer
+## or when facing conflicts in dependencies:
+composer require --dev php-cs-fixer/shim
 ```
 
-For more details and other installation methods, see
+For more details and other installation methods (also with Docker or behind CI), see
 [installation instructions](./doc/installation.rst).
-
-### Run with Docker
-
-You can use pre-built Docker images to run `php-cs-fixer`.
-
-```console
-docker run -it --rm -v $(pwd):/code ghcr.io/php-cs-fixer/php-cs-fixer:${FIXER_VERSION:-3-php8.3} fix src
-```
-
-`$FIXER_VERSION` used in example above is an identifier of a release you want to use, which is based on Fixer and PHP versions combined. There are different tags for each Fixer's SemVer level and PHP version with syntax `<php-cs-fixer-version>-php<php-version>`. For example:
-
-- `3.57.0-php7.4`
-- `3.57-php8.0`
-- `3-php8.3`
 
 ### Usage
 
@@ -76,7 +55,7 @@ Assuming you installed PHP CS Fixer as instructed above, you can run the
 following command to fix the PHP files in the `src` directory:
 
 ```console
-tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src
+./vendor/bin/php-cs-fixer fix src
 ```
 
 See [usage](./doc/usage.rst), list of [built-in rules](./doc/rules/index.rst), list of [rule sets](./doc/ruleSets/index.rst)
@@ -89,11 +68,11 @@ If you need to apply code styles that are not supported by the tool, you can
 
 Dedicated plugins exist for:
 
-- [NetBeans](https://plugins.netbeans.apache.org/catalogue/?id=36)
-- [PhpStorm](https://www.jetbrains.com/help/phpstorm/using-php-cs-fixer.html)
-- [Sublime Text](https://github.com/benmatselby/sublime-phpcs)
-- [Vim](https://github.com/stephpy/vim-php-cs-fixer)
-- [VS Code](https://github.com/junstyle/vscode-php-cs-fixer)
+* [NetBeans](https://plugins.netbeans.apache.org/catalogue/?id=36)
+* [PhpStorm](https://www.jetbrains.com/help/phpstorm/using-php-cs-fixer.html)
+* [Sublime Text](https://github.com/benmatselby/sublime-phpcs)
+* [Vim](https://github.com/stephpy/vim-php-cs-fixer)
+* [VS Code](https://github.com/junstyle/vscode-php-cs-fixer)
 
 ## Community
 

@@ -15,17 +15,17 @@ as [Streams](https://github.com/reactphp/stream).
 
 **Table of contents**
 
-- [Quickstart example](#quickstart-example)
-- [Process](#process)
-  - [Stream Properties](#stream-properties)
-  - [Command](#command)
-  - [Termination](#termination)
-  - [Custom pipes](#custom-pipes)
-  - [Sigchild Compatibility](#sigchild-compatibility)
-  - [Windows Compatibility](#windows-compatibility)
-- [Install](#install)
-- [Tests](#tests)
-- [License](#license)
+* [Quickstart example](#quickstart-example)
+* [Process](#process)
+  * [Stream Properties](#stream-properties)
+  * [Command](#command)
+  * [Termination](#termination)
+  * [Custom pipes](#custom-pipes)
+  * [Sigchild Compatibility](#sigchild-compatibility)
+  * [Windows Compatibility](#windows-compatibility)
+* [Install](#install)
+* [Tests](#tests)
+* [License](#license)
 
 ## Quickstart example
 
@@ -49,8 +49,8 @@ See also the [examples](examples).
 ### Stream Properties
 
 Once a process is started, its I/O streams will be constructed as instances of
-`React\Stream\ReadableStreamInterface` and `React\Stream\WritableStreamInterface`.
-Before `start()` is called, these properties are not set. Once a process terminates,
+`React\Stream\ReadableStreamInterface` and `React\Stream\WritableStreamInterface`. 
+Before `start()` is called, these properties are not set. Once a process terminates, 
 the streams will become closed but not unset.
 
 Following common Unix conventions, this library will start each child process
@@ -58,9 +58,9 @@ with the three pipes matching the standard I/O streams as given below by default
 You can use the named references for common use cases or access these as an
 array with all three pipes.
 
-- `$stdin` or `$pipes[0]` is a `WritableStreamInterface`
-- `$stdout` or `$pipes[1]` is a `ReadableStreamInterface`
-- `$stderr` or `$pipes[2]` is a `ReadableStreamInterface`
+* `$stdin`  or `$pipes[0]` is a `WritableStreamInterface`
+* `$stdout` or `$pipes[1]` is a `ReadableStreamInterface`
+* `$stderr` or `$pipes[2]` is a `ReadableStreamInterface`
 
 Note that this default configuration may be overridden by explicitly passing
 [custom pipes](#custom-pipes), in which case they may not be set or be assigned
@@ -71,8 +71,8 @@ I/O references will always be set to reference the pipes matching the above
 conventions. See [custom pipes](#custom-pipes) for more details.
 
 Because each of these implement the underlying
-[`ReadableStreamInterface`](https://github.com/reactphp/stream#readablestreaminterface) or
-[`WritableStreamInterface`](https://github.com/reactphp/stream#writablestreaminterface),
+[`ReadableStreamInterface`](https://github.com/reactphp/stream#readablestreaminterface) or 
+[`WritableStreamInterface`](https://github.com/reactphp/stream#writablestreaminterface), 
 you can use any of their events and methods as usual:
 
 ```php
@@ -101,7 +101,7 @@ $process->stdin->end($data = null);
 ```
 
 For more details, see the
-[`ReadableStreamInterface`](https://github.com/reactphp/stream#readablestreaminterface) and
+[`ReadableStreamInterface`](https://github.com/reactphp/stream#readablestreaminterface) and 
 [`WritableStreamInterface`](https://github.com/reactphp/stream#writablestreaminterface).
 
 ### Command
@@ -147,10 +147,10 @@ $process->start();
 ```
 
 > Note that [Windows support](#windows-compatibility) is limited in that it
-> doesn't support STDIO streams at all and also that processes will not be run
-> in a wrapping shell by default. If you want to run a shell built-in function
-> such as `echo hello` or `sleep 10`, you may have to prefix your command line
-> with an explicit shell like `cmd /c echo hello`.
+  doesn't support STDIO streams at all and also that processes will not be run
+  in a wrapping shell by default. If you want to run a shell built-in function
+  such as `echo hello` or `sleep 10`, you may have to prefix your command line
+  with an explicit shell like `cmd /c echo hello`.
 
 In other words, the underlying shell is responsible for managing this command
 line and launching the individual sub-commands and connecting their STDIO
@@ -410,7 +410,7 @@ If this work-around is disabled on an affected PHP installation, the `exit`
 event may receive `null` instead of the actual exit code as described above.
 Similarly, some distributions are known to omit the configure options from
 `phpinfo()`, so automatic detection may fail to enable this work-around in some
-cases. You may then enable this explicitly as given above.
+cases. You may then enable this  explicitly as given above.
 
 **Note:** The original functionality was taken from Symfony's
 [Process](https://github.com/symfony/process) compoment.
@@ -432,141 +432,141 @@ $process->start();
 There are a number of alternatives and workarounds as detailed below if you want
 to run a child process on Windows, each with its own set of pros and cons:
 
-- As of PHP 8, you can start the child process with `socket` pair descriptors
-  in place of normal standard I/O pipes like this:
+*   As of PHP 8, you can start the child process with `socket` pair descriptors
+    in place of normal standard I/O pipes like this:
 
-  ```php
-  $process = new Process(
-      'ping example.com',
-      null,
-      null,
-      [
-          ['socket'],
-          ['socket'],
-          ['socket']
-      ]
-  );
-  $process->start();
+    ```php
+    $process = new Process(
+        'ping example.com',
+        null,
+        null,
+        [
+            ['socket'],
+            ['socket'],
+            ['socket']
+        ]
+    );
+    $process->start();
 
-  $process->stdout->on('data', function ($chunk) {
-      echo $chunk;
-  });
-  ```
+    $process->stdout->on('data', function ($chunk) {
+        echo $chunk;
+    });
+    ```
 
-  These `socket` pairs support non-blocking process I/O on any platform,
-  including Windows. However, not all programs accept stdio sockets.
+    These `socket` pairs support non-blocking process I/O on any platform,
+    including Windows. However, not all programs accept stdio sockets.
 
-- This package does work on
-  [`Windows Subsystem for Linux`](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)
-  (or WSL) without issues. When you are in control over how your application is
-  deployed, we recommend [installing WSL](https://msdn.microsoft.com/en-us/commandline/wsl/install_guide)
-  when you want to run this package on Windows.
+*   This package does work on
+    [`Windows Subsystem for Linux`](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)
+    (or WSL) without issues. When you are in control over how your application is
+    deployed, we recommend [installing WSL](https://msdn.microsoft.com/en-us/commandline/wsl/install_guide)
+    when you want to run this package on Windows.
 
-- If you only care about the exit code of a child process to check if its
-  execution was successful, you can use [custom pipes](#custom-pipes) to omit
-  any standard I/O pipes like this:
+*   If you only care about the exit code of a child process to check if its
+    execution was successful, you can use [custom pipes](#custom-pipes) to omit
+    any standard I/O pipes like this:
 
-  ```php
-  $process = new Process('ping example.com', null, null, array());
-  $process->start();
+    ```php
+    $process = new Process('ping example.com', null, null, array());
+    $process->start();
 
-  $process->on('exit', function ($exitcode) {
-      echo 'exit with ' . $exitcode . PHP_EOL;
-  });
-  ```
+    $process->on('exit', function ($exitcode) {
+        echo 'exit with ' . $exitcode . PHP_EOL;
+    });
+    ```
 
-  Similarly, this is also useful if your child process communicates over
-  sockets with remote servers or even your parent process using the
-  [Socket component](https://github.com/reactphp/socket). This is usually
-  considered the best alternative if you have control over how your child
-  process communicates with the parent process.
+    Similarly, this is also useful if your child process communicates over
+    sockets with remote servers or even your parent process using the
+    [Socket component](https://github.com/reactphp/socket). This is usually
+    considered the best alternative if you have control over how your child
+    process communicates with the parent process.
 
-- If you only care about command output after the child process has been
-  executed, you can use [custom pipes](#custom-pipes) to configure file
-  handles to be passed to the child process instead of pipes like this:
+*   If you only care about command output after the child process has been
+    executed, you can use [custom pipes](#custom-pipes) to configure file
+    handles to be passed to the child process instead of pipes like this:
 
-  ```php
-  $process = new Process('ping example.com', null, null, array(
-      array('file', 'nul', 'r'),
-      $stdout = tmpfile(),
-      array('file', 'nul', 'w')
-  ));
-  $process->start();
+    ```php
+    $process = new Process('ping example.com', null, null, array(
+        array('file', 'nul', 'r'),
+        $stdout = tmpfile(),
+        array('file', 'nul', 'w')
+    ));
+    $process->start();
 
-  $process->on('exit', function ($exitcode) use ($stdout) {
-      echo 'exit with ' . $exitcode . PHP_EOL;
+    $process->on('exit', function ($exitcode) use ($stdout) {
+        echo 'exit with ' . $exitcode . PHP_EOL;
 
-      // rewind to start and then read full file (demo only, this is blocking).
-      // reading from shared file is only safe if you have some synchronization in place
-      // or after the child process has terminated.
-      rewind($stdout);
-      echo stream_get_contents($stdout);
-      fclose($stdout);
-  });
-  ```
+        // rewind to start and then read full file (demo only, this is blocking).
+        // reading from shared file is only safe if you have some synchronization in place
+        // or after the child process has terminated.
+        rewind($stdout);
+        echo stream_get_contents($stdout);
+        fclose($stdout);
+    });
+    ```
 
-  Note that this example uses `tmpfile()`/`fopen()` for illustration purposes only.
-  This should not be used in a truly async program because the filesystem is
-  inherently blocking and each call could potentially take several seconds.
-  See also the [Filesystem component](https://github.com/reactphp/filesystem) as an
-  alternative.
+    Note that this example uses `tmpfile()`/`fopen()` for illustration purposes only.
+    This should not be used in a truly async program because the filesystem is
+    inherently blocking and each call could potentially take several seconds.
+    See also the [Filesystem component](https://github.com/reactphp/filesystem) as an
+    alternative.
 
-- If you want to access command output as it happens in a streaming fashion,
-  you can use redirection to spawn an additional process to forward your
-  standard I/O streams to a socket and use [custom pipes](#custom-pipes) to
-  omit any actual standard I/O pipes like this:
+*   If you want to access command output as it happens in a streaming fashion,
+    you can use redirection to spawn an additional process to forward your
+    standard I/O streams to a socket and use [custom pipes](#custom-pipes) to
+    omit any actual standard I/O pipes like this:
 
-  ```php
-  $server = new React\Socket\Server('127.0.0.1:0');
-  $server->on('connection', function (React\Socket\ConnectionInterface $connection) {
-      $connection->on('data', function ($chunk) {
-          echo $chunk;
-      });
-  });
+    ```php
+    $server = new React\Socket\Server('127.0.0.1:0');
+    $server->on('connection', function (React\Socket\ConnectionInterface $connection) {
+        $connection->on('data', function ($chunk) {
+            echo $chunk;
+        });
+    });
 
-  $command = 'ping example.com | foobar ' . escapeshellarg($server->getAddress());
-  $process = new Process($command, null, null, array());
-  $process->start();
+    $command = 'ping example.com | foobar ' . escapeshellarg($server->getAddress());
+    $process = new Process($command, null, null, array());
+    $process->start();
 
-  $process->on('exit', function ($exitcode) use ($server) {
-      $server->close();
-      echo 'exit with ' . $exitcode . PHP_EOL;
-  });
-  ```
+    $process->on('exit', function ($exitcode) use ($server) {
+        $server->close();
+        echo 'exit with ' . $exitcode . PHP_EOL;
+    });
+    ```
 
-  Note how this will spawn another fictional `foobar` helper program to consume
-  the standard output from the actual child process. This is in fact similar
-  to the above recommendation of using socket connections in the child process,
-  but in this case does not require modification of the actual child process.
+    Note how this will spawn another fictional `foobar` helper program to consume
+    the standard output from the actual child process. This is in fact similar
+    to the above recommendation of using socket connections in the child process,
+    but in this case does not require modification of the actual child process.
 
-  In this example, the fictional `foobar` helper program can be implemented by
-  simply consuming all data from standard input and forwarding it to a socket
-  connection like this:
+    In this example, the fictional `foobar` helper program can be implemented by
+    simply consuming all data from standard input and forwarding it to a socket
+    connection like this:
 
-  ```php
-  $socket = stream_socket_client($argv[1]);
-  do {
-      fwrite($socket, $data = fread(STDIN, 8192));
-  } while (isset($data[0]));
-  ```
+    ```php
+    $socket = stream_socket_client($argv[1]);
+    do {
+        fwrite($socket, $data = fread(STDIN, 8192));
+    } while (isset($data[0]));
+    ```
 
-  Accordingly, this example can also be run with plain PHP without having to
-  rely on any external helper program like this:
+    Accordingly, this example can also be run with plain PHP without having to
+    rely on any external helper program like this:
 
-  ```php
-  $code = '$s=stream_socket_client($argv[1]);do{fwrite($s,$d=fread(STDIN, 8192));}while(isset($d[0]));';
-  $command = 'ping example.com | php -r ' . escapeshellarg($code) . ' ' . escapeshellarg($server->getAddress());
-  $process = new Process($command, null, null, array());
-  $process->start();
-  ```
+    ```php
+    $code = '$s=stream_socket_client($argv[1]);do{fwrite($s,$d=fread(STDIN, 8192));}while(isset($d[0]));';
+    $command = 'ping example.com | php -r ' . escapeshellarg($code) . ' ' . escapeshellarg($server->getAddress());
+    $process = new Process($command, null, null, array());
+    $process->start();
+    ```
 
-  See also [example #23](examples/23-forward-socket.php).
+    See also [example #23](examples/23-forward-socket.php).
 
-  Note that this is for illustration purposes only and you may want to implement
-  some proper error checks and/or socket verification in actual production use
-  if you do not want to risk other processes connecting to the server socket.
-  In this case, we suggest looking at the excellent
-  [createprocess-windows](https://github.com/cubiclesoft/createprocess-windows).
+    Note that this is for illustration purposes only and you may want to implement
+    some proper error checks and/or socket verification in actual production use
+    if you do not want to risk other processes connecting to the server socket.
+    In this case, we suggest looking at the excellent
+    [createprocess-windows](https://github.com/cubiclesoft/createprocess-windows).
 
 Additionally, note that the [command](#command) given to the `Process` will be
 passed to the underlying Windows-API
@@ -588,14 +588,14 @@ The recommended way to install this library is [through Composer](https://getcom
 This will install the latest supported version:
 
 ```bash
-composer require react/child-process:^0.6.5
+composer require react/child-process:^0.6.6
 ```
 
 See also the [CHANGELOG](CHANGELOG.md) for details about version upgrades.
 
 This project aims to run on any platform and thus does not require any PHP
 extensions and supports running on legacy PHP 5.3 through current PHP 8+ and HHVM.
-It's _highly recommended to use the latest supported PHP version_ for this project.
+It's *highly recommended to use the latest supported PHP version* for this project.
 
 See above note for limited [Windows Compatibility](#windows-compatibility).
 

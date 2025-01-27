@@ -2,9 +2,15 @@
 
 $driver = 'mysql';
 $host = '127.0.0.1';
-$db_name = 'smile';
-$db_user = 'root';
-$db_pass = '';
+if ($_SERVER['DOCUMENT_ROOT'] == '/Applications/XAMPP/xamppfiles/hosts/cashier-workplace/src/') {
+    $db_name = 'smile';
+    $db_user = 'root';
+    $db_pass = '';
+} else {
+    $db_name = 'admin_smile';
+    $db_user = 'admin_smile';
+    $db_pass = 'Q!w2e3r4t5';
+}
 $charset = 'utf8';
 $options = [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

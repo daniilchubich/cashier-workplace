@@ -1,6 +1,7 @@
-<?php //include "./path.php"; 
+<?php //include "./path.php";
 ?>
-<?php include $_SERVER["DOCUMENT_ROOT"] .  "/controllers/check.php"; ?>
+<?php include $_SERVER["DOCUMENT_ROOT"] .  "/controllers/check.php";
+var_dump($_SERVER["DOCUMENT_ROOT"]); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,7 +33,7 @@
         <div id="main-content">
             <!-- Content start -->
             <div id="content">
-                <?php //include "app/include/active-product.php" 
+                <?php //include "app/include/active-product.php"
                 ?>
                 <span id="result"></span>
                 <div id="content-single" class="content-single">
@@ -49,10 +50,12 @@
                             <span>грн.</span>
                         </div>
                         <div class="weight">
-                            <span class="weight-minus" onclick="adjustCounter('minus', <?= $product['id'] ?>)">-</span>
+                            <span class="weight-minus"
+                                onclick="adjustCounter('minus', <?= isset($product['id']) ? $product['id'] : '' ?>)">-</span>
                             <input type="text" placeholder="1"
                                 value="<?= isset($product['quantity']) ? $product['quantity'] : '' ?>">
-                            <span class="weight-plus" onclick="adjustCounter('plus',<?= $product['id'] ?>)">+</span>
+                            <span class="weight-plus"
+                                onclick="adjustCounter('plus',<?= isset($product['id']) ? $product['id'] : '' ?>)">+</span>
                             <!-- <span class="weight-basket">
                  <i class="bi bi-basket"></i> 
             </span> -->

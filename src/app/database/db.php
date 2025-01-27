@@ -13,7 +13,14 @@ function tt($value)
     echo '</pre>';
     //exit();
 }
-
+function issetShort($condition, $else)
+{
+    if (isset($else) == '') {
+        isset($condition) ? $condition : $else;
+    } else {
+        echo "Передані не усі аргументи!";
+    }
+}
 function dbCheckError($query)
 {
     $errInfo = $query->errorInfo();

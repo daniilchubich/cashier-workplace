@@ -1,0 +1,21 @@
+# Игнорировать папку node_modules
+node_modules/
+
+# Игнорировать папку vendor
+vendor/
+
+# Игнорировать cache
+*.cache
+package-lock.json
+*.DS_Store
+
+# # Игнорировать любые папки с названием cache
+# **/cache/
+
+# # Игнорировать папки dist и build
+# dist/
+# build/
+
+# # Игнорировать временные папки
+# tmp/
+# temp/

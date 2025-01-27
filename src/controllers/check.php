@@ -1,4 +1,5 @@
 <?php
+
 include $_SERVER["DOCUMENT_ROOT"] . "/app/database/db.php";
 //session_start();
 //var_dump($_POST);
@@ -11,6 +12,10 @@ if (isset($_SESSION['id_active_product'])) {
 if (isset($_POST['barcode'])) {
     // Отримуємо код із POST-запиту
     $bar = trim($_POST['barcode']); // Прибираємо зайві пробіли
+
+
+
+
 
     // Перевіряємо, чи існує штрих-код у базі
     $barcode = selectOne('barcode', ['code' => $bar]);
