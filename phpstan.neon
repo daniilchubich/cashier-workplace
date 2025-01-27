@@ -1,0 +1,7 @@
+parameters:
+    level: 5
+    paths:
+        - src # Або інша папка з вашим PHP-кодом
+    ignoreErrors: []
+    excludePaths:
+        - vendor/* # Виключення директорії vendor
