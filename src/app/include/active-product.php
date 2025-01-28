@@ -2,7 +2,7 @@
 //tt($_POST);
 if (isset($_POST['string_id'])) {
 
-    $string_id = issetShort(isset($_POST['string_id']), '');
+    $string_id = isset($_POST['string_id']) ? $_POST['string_id'] : '';
     // $product_id = $_POST['id_active_product'];
     $product_active = isset($_SESSION['cart'][$string_id]) ? $_SESSION['cart'][$string_id] : '';
     $quantity = isset($_POST['quantity']) ? $_POST['quantity'] : 0;
@@ -17,24 +17,24 @@ if (isset($_POST['string_id'])) {
 ?>
 <div class="content-single">
     <div class="single-top">
-        <span class="name"><?= issetShort(isset($_POST['full_name']), ''); ?></span>
+        <span class="name"><?= isset($_POST['full_name']) ? $_POST['full_name'] : ''; ?></span>
         <span class="btn-trash-wrapper">
             <i class="bi bi-trash"></i>
         </span>
     </div>
     <div class="single-bottom">
         <div class="cost">
-            <input type="text" placeholder="<?= issetShort(isset($product_active['price']), 0) ?>"
-                value="<?= issetShort(isset($product_active['price']), 0) ?>">
+            <input type="text" placeholder="<?= isset($product_active['price']) ? $product_active['price'] : 0 ?>"
+                value="<?= isset($product_active['price']) ? $product_active['price'] : 0 ?>">
             <span>грн.</span>
         </div>
         <div class="weight">
             <span class="weight-minus"
-                onclick="adjustCounter('minus', <?= issetShort(isset($product_active['id']), 0) ?>)">-</span>
+                onclick="adjustCounter('minus', <?= isset($product_active['price']) ? $product_active['id'] : 0 ?>)">-</span>
             <input type="text" placeholder="1"
-                value="<?= issetShort(isset($_SESSION['cart'][isset($string_id)]['quantity']), 0) ?>">
+                value="<?= isset($_SESSION['cart'][isset($string_id)]['quantity']) ? $_SESSION['cart'][isset($string_id)]['quantity'] : 1 ?>">
             <span class="weight-plus"
-                onclick="adjustCounter('plus',<?= issetShort(isset($product_active['id']), 0) ?>)">+</span>
+                onclick="adjustCounter('plus',<?= isset($product_active['price']) ? $product_active['id'] : 0 ?>)">+</span>
             <!-- <span class="weight-basket">
                  <i class="bi bi-basket"></i> 
             </span> -->
@@ -47,7 +47,9 @@ if (isset($_POST['string_id'])) {
         </div>
         <div class="sum">
             <span>Усього за товар:</span>
-            <b><?= $_SESSION['cart'][isset($string_id)]['price'] * $_SESSION['cart'][isset($string_id)]['quantity'] ?>
+            <b><?php if (isset($string_id)) {
+                    echo $_SESSION['cart'][$string_id]['price'] * $_SESSION['cart'][$string_id]['quantity'];
+                } ?>
                 грн.</b>
         </div>
     </div>

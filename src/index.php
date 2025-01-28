@@ -1,7 +1,7 @@
 <?php //include "./path.php";
 ?>
 <?php include $_SERVER["DOCUMENT_ROOT"] .  "/controllers/check.php";
-var_dump($_SERVER["DOCUMENT_ROOT"]); ?>
+?>
 <!DOCTYPE html>
 <html lang="en">
 
