@@ -18,7 +18,7 @@ function allRows() {
   document.getElementById("no_discount").textContent = totalSum.toFixed(2);
   document.getElementById("total_pay").textContent = totalSum.toFixed(2);
 }
-
+allRows();
 const barcodeInput = document.getElementById("barcode");
 //const resultElement = document.getElementById("result");
 
