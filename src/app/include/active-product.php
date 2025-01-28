@@ -17,7 +17,7 @@ if (isset($_POST['string_id'])) {
 ?>
 <div class="content-single">
     <div class="single-top">
-        <span class="name"><?= isset($_POST['full_name']) ? $_POST['full_name'] : ''; ?></span>
+        <span class="name"><?= isset($product_active['full_name']) ? $product_active['full_name'] : 0 ?></span>
         <span class="btn-trash-wrapper">
             <i class="bi bi-trash"></i>
         </span>
@@ -31,8 +31,10 @@ if (isset($_POST['string_id'])) {
         <div class="weight">
             <span class="weight-minus"
                 onclick="adjustCounter('minus', <?= isset($product_active['price']) ? $product_active['id'] : 0 ?>)">-</span>
-            <input type="text" placeholder="1"
-                value="<?= isset($_SESSION['cart'][isset($string_id)]['quantity']) ? $_SESSION['cart'][isset($string_id)]['quantity'] : 1 ?>">
+            <input type="text" placeholder="1" value="<?php if (isset($string_id)) {
+
+                                                            echo isset($_SESSION['cart'][$string_id]['quantity']) ? $_SESSION['cart'][$string_id]['quantity'] : 1;
+                                                        } ?>">
             <span class="weight-plus"
                 onclick="adjustCounter('plus',<?= isset($product_active['price']) ? $product_active['id'] : 0 ?>)">+</span>
             <!-- <span class="weight-basket">
@@ -68,26 +70,26 @@ if (isset($_POST['string_id'])) {
 
         <tbody>
             <?php if (isset($_SESSION['cart'])): ?>
-            <?php $_SESSION['total_amount'] = 0; ?>
-            <?php for ($i = 0; $i < count($_SESSION['cart']); $i++):  ?>
-            <?php $_SESSION['total_amount'] =  $_SESSION['total_amount'] + $_SESSION['cart'][$i]['price'] * $_SESSION['cart'][$i]['quantity']; ?>
-            <span id="total_amount"
-                style="display:none"><?= isset($_SESSION['total_amount']) ? $_SESSION['total_amount'] : '' ?></span>
-            <?php if (isset($string_id) && $i == $string_id) {
+                <?php $_SESSION['total_amount'] = 0; ?>
+                <?php for ($i = 0; $i < count($_SESSION['cart']); $i++):  ?>
+                    <?php $_SESSION['total_amount'] =  $_SESSION['total_amount'] + $_SESSION['cart'][$i]['price'] * $_SESSION['cart'][$i]['quantity']; ?>
+                    <span id="total_amount"
+                        style="display:none"><?= isset($_SESSION['total_amount']) ? $_SESSION['total_amount'] : '' ?></span>
+                    <?php if (isset($string_id) && $i == $string_id) {
                         $active = 'active';
                     } else {
                         $active = '';
                     } ?>
-            <tr class="<?= $active ?>" onclick="sendActiveProduct('<?= $_SESSION['cart'][$i]['id'] ?>',<?= $i ?>)">
-                <th id="id" scope="row"><?= $i + 1 ?></th>
-                <td id="name"><?= $_SESSION['cart'][$i]['name'] ?></td>
-                <td id="price"><?= $_SESSION['cart'][$i]['price'] ?></td>
-                <td id="quantity"><span><?= $_SESSION['cart'][$i]['quantity'] ?></span> шт.</td>
-                <td id="sum" style="font-weight: 600; text-align: right;">
-                    <?= $_SESSION['cart'][$i]['price'] * $_SESSION['cart'][$i]['quantity'] ?>
-                </td>
-            </tr>
-            <?php endfor ?>
+                    <tr class="<?= $active ?>" onclick="sendActiveProduct('<?= $_SESSION['cart'][$i]['id'] ?>',<?= $i ?>)">
+                        <th id="id" scope="row"><?= $i + 1 ?></th>
+                        <td id="name"><?= $_SESSION['cart'][$i]['name'] ?></td>
+                        <td id="price"><?= $_SESSION['cart'][$i]['price'] ?></td>
+                        <td id="quantity"><span><?= $_SESSION['cart'][$i]['quantity'] ?></span> шт.</td>
+                        <td id="sum" style="font-weight: 600; text-align: right;">
+                            <?= $_SESSION['cart'][$i]['price'] * $_SESSION['cart'][$i]['quantity'] ?>
+                        </td>
+                    </tr>
+                <?php endfor ?>
 
             <?php
             endif ?>

@@ -1,19 +1,24 @@
 function allRows() {
-  const allRows = document.querySelectorAll("tbody tr");
+  const allRowsTbody = document.querySelector("tbody"); // Получаем актуальные строки
+  const allRows = allRowsTbody.querySelectorAll("tr");
+  let totalSum = 0; // Обнуляем сумму при каждом вызове функции
 
-  let totalSum = 0;
   allRows.forEach((row) => {
     const sumElement = row.querySelector("#sum"); // Ищем элемент с id="sum" внутри строки
     if (sumElement) {
       const value = parseFloat(sumElement.textContent); // Преобразуем текст в число
       if (!isNaN(value)) {
-        // Проверяем, что значение корректное
+        console.log(value);
         totalSum += value; // Добавляем значение к общей сумме
       }
     }
   });
+
   console.log("Общая сумма:", totalSum);
+  document.getElementById("no_discount").textContent = totalSum.toFixed(2);
+  document.getElementById("total_pay").textContent = totalSum.toFixed(2);
 }
+
 const barcodeInput = document.getElementById("barcode");
 //const resultElement = document.getElementById("result");
 
