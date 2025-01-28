@@ -68,24 +68,26 @@ if (isset($_POST['string_id'])) {
 
         <tbody>
             <?php if (isset($_SESSION['cart'])): ?>
-                <?php $_SESSION['total_amount'] = 0; ?>
-                <?php for ($i = 0; $i < count($_SESSION['cart']); $i++):  ?>
-                    <?php $_SESSION['total_amount'] =  $_SESSION['total_amount'] + $_SESSION['cart'][$i]['price'] * $_SESSION['cart'][$i]['quantity']; ?>
-                    <?php if ($i == isset($string_id)) {
+            <?php $_SESSION['total_amount'] = 0; ?>
+            <?php for ($i = 0; $i < count($_SESSION['cart']); $i++):  ?>
+            <?php $_SESSION['total_amount'] =  $_SESSION['total_amount'] + $_SESSION['cart'][$i]['price'] * $_SESSION['cart'][$i]['quantity']; ?>
+            <span id="total_amount"
+                style="display:none"><?= isset($_SESSION['total_amount']) ? $_SESSION['total_amount'] : '' ?></span>
+            <?php if (isset($string_id) && $i == $string_id) {
                         $active = 'active';
                     } else {
                         $active = '';
                     } ?>
-                    <tr class="<?= $active ?>" onclick="sendActiveProduct('<?= $_SESSION['cart'][$i]['id'] ?>',<?= $i ?>)">
-                        <th id="id" scope="row"><?= $i + 1 ?></th>
-                        <td id="name"><?= $_SESSION['cart'][$i]['name'] ?></td>
-                        <td id="price"><?= $_SESSION['cart'][$i]['price'] ?></td>
-                        <td id="quantity"><span><?= $_SESSION['cart'][$i]['quantity'] ?></span> шт.</td>
-                        <td id="sum" style="font-weight: 600; text-align: right;">
-                            <?= $_SESSION['cart'][$i]['price'] * $_SESSION['cart'][$i]['quantity'] ?>
-                        </td>
-                    </tr>
-                <?php endfor ?>
+            <tr class="<?= $active ?>" onclick="sendActiveProduct('<?= $_SESSION['cart'][$i]['id'] ?>',<?= $i ?>)">
+                <th id="id" scope="row"><?= $i + 1 ?></th>
+                <td id="name"><?= $_SESSION['cart'][$i]['name'] ?></td>
+                <td id="price"><?= $_SESSION['cart'][$i]['price'] ?></td>
+                <td id="quantity"><span><?= $_SESSION['cart'][$i]['quantity'] ?></span> шт.</td>
+                <td id="sum" style="font-weight: 600; text-align: right;">
+                    <?= $_SESSION['cart'][$i]['price'] * $_SESSION['cart'][$i]['quantity'] ?>
+                </td>
+            </tr>
+            <?php endfor ?>
 
             <?php
             endif ?>
