@@ -363,7 +363,7 @@ body {
   font-size: 24px;
 }
 
-#main-content .modal .modal-body input {
+#barcodeForm .modal .modal-body input {
   width: 100%;
   outline: none;
   border: 2px solid #aeccf7;

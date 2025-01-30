@@ -1,4 +1,4 @@
-<form action="index.php" method="POST" id="barcodeForm">
+<form action="" method="POST" id="barcodeForm">
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -15,7 +15,7 @@
                     <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     Відмінити
                 </button> -->
-                    <button class="btn btn-primary">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="getBarcodeInput()">
                         Продовжити
                     </button>
                 </div>
@@ -23,4 +23,3 @@
         </div>
     </div>
 </form>
-</div>

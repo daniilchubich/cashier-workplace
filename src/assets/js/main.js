@@ -1,5 +1,6 @@
 function allRows() {
   const allRowsTbody = document.querySelector("tbody"); // Получаем актуальные строки
+  console.log(allRowsTbody);
   const allRows = allRowsTbody.querySelectorAll("tr");
   let totalSum = 0; // Обнуляем сумму при каждом вызове функции
 
@@ -18,65 +19,73 @@ function allRows() {
   document.getElementById("no_discount").textContent = totalSum.toFixed(2);
   document.getElementById("total_pay").textContent = totalSum.toFixed(2);
 }
-allRows();
-const barcodeInput = document.getElementById("barcode");
-//const resultElement = document.getElementById("result");
 
-// Событие Enter
-const enterEvent = new KeyboardEvent("keydown", {
-  key: "Enter",
-  keyCode: 13, // Код клавиши Enter
-  code: "Enter",
-  which: 13,
-  bubbles: true, // Важно для передачи события
-});
+function getBarcodeInput() {
+  const barcodeInput = document.getElementById("barcode");
+  const valueBarcodeInput = barcodeInput.value;
+  sendData({
+    barcode: valueBarcodeInput,
+  });
+}
+document.addEventListener("DOMContentLoaded", () => {
+  const barcodeInput = document.getElementById("barcode");
 
-let barcodeData = ""; // Для накопления данных
-let timer;
+  //console.log(valueBarcodeInput);
+  // Событие Enter
+  const enterEvent = new KeyboardEvent("keydown", {
+    key: "Enter",
+    keyCode: 13, // Код клавиши Enter
+    code: "Enter",
+    which: 13,
+    bubbles: true, // Важно для передачи события
+  });
 
-// Глобальный обработчик события `keydown`
-document.addEventListener("keydown", (event) => {
-  clearTimeout(timer); // Сбрасываем таймер
+  let barcodeData = ""; // Для накопления данных
+  let timer;
 
-  // Проверяем, что это обычный символ (не управляющая клавиша)
-  if (event.key.length === 1) {
-    barcodeData += event.key; // Добавляем символ в строку
-  }
+  // Глобальный обработчик события `keydown`
+  document.addEventListener("keydown", (event) => {
+    clearTimeout(timer); // Сбрасываем таймер
 
-  // Если сканер завершил ввод (Enter)
-  if (event.key === "Enter") {
-    event.preventDefault(); // Останавливаем стандартное поведение
-
-    if (barcodeData.trim()) {
-      // Если данные не пусты, помещаем их в input
-      barcodeInput.value = barcodeData;
-      console.log(`Получены данные: ${barcodeData}`);
-
-      barcodeForm.submit();
+    // Проверяем, что это обычный символ (не управляющая клавиша)
+    if (event.key.length === 1) {
+      barcodeData += event.key; // Добавляем символ в строку
     }
 
-    // Сбрасываем данные
-    barcodeData = "";
-  }
+    // Если сканер завершил ввод (Enter)
+    if (event.key === "Enter") {
+      event.preventDefault(); // Останавливаем стандартное поведение
 
-  // Таймер сброса данных при отсутствии активности
-  timer = setTimeout(() => {
-    barcodeData = ""; // Очищаем строку, если прошло больше 500 мс
-  }, 500);
+      if (barcodeData.trim()) {
+        // Если данные не пусты, помещаем их в input
+        //barcodeInput.value = barcodeData;
+        sendData({
+          barcode: barcodeData,
+        });
+        allRows();
+        console.log(`Получены данные: ${barcodeData}`);
+
+        //barcodeForm.submit();
+      }
+
+      // Сбрасываем данные
+      barcodeData = "";
+    }
+
+    // Таймер сброса данных при отсутствии активности
+    timer = setTimeout(() => {
+      barcodeData = ""; // Очищаем строку, если прошло больше 500 мс
+    }, 1000);
+  });
 });
 
-// Обработчик для Enter на самом input (если нужно)
-barcodeInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    console.log("Enter был сгенерирован и обработан внутри input!");
-  }
-});
-function sendActiveProduct(product_id, string_id) {
-  document.getElementById("index").style.display = "none";
-  document.getElementById("content-single").style.display = "none";
-  document.getElementById("result1").innerHTML = "";
+function sendActiveProduct(string_id) {
+  //document.getElementById("index").style.display = "none";
+  //document.getElementById("content-single").style.display = "none";
+  // document.getElementById("result1").innerHTML = "";
   var xhr = new XMLHttpRequest();
-  var url = "app/include/active-product.php"; // Замените на ваш серверный скрипт
+  //var url = "app/include/active-product.php"; // Замените на ваш серверный скрипт
+  var url = "app/models/check.php";
   xhr.open("POST", url, true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   //console.log(url);
@@ -89,21 +98,15 @@ function sendActiveProduct(product_id, string_id) {
 
   // Подготовка данных для отправки
 
-  var data = `id_active_product=${encodeURIComponent(
-    product_id
-  )}&string_id=${encodeURIComponent(string_id)}`; // Подставьте свои данные
+  var data = `string_id=${encodeURIComponent(string_id)}`; // Подставьте свои данные
   console.log(data);
   xhr.send(data);
-  allRows();
+  //allRows();
 }
 
 function updateProduct(string_id, quantity, sum, id_active_product) {
-  document.getElementById("index").style.display = "none";
-  document.getElementById("content-single").style.display = "none";
-
-  document.getElementById("result1").innerHTML = "";
   var xhr = new XMLHttpRequest();
-  var url = "app/include/active-product.php"; // Замените на ваш серверный скрипт
+  var url = "app/models/check.php"; // Замените на ваш серверный скрипт
   xhr.open("POST", url, true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   //console.log(url);
@@ -120,13 +123,10 @@ function updateProduct(string_id, quantity, sum, id_active_product) {
     id_active_product
   )}&sum=${encodeURIComponent(sum)}&quantity=${encodeURIComponent(
     quantity
-  )}&string_id=${encodeURIComponent(string_id)}`; // Подставьте свои данные
+  )}&string_id=${encodeURIComponent(string_id)}&`; // Подставьте свои данные
   console.log(data);
   xhr.send(data);
 }
-// Переменная для хранения общей суммы
-
-// Перебираем каждую строку
 
 function adjustCounter(operator, product_id) {
   const inputField = document.querySelector(".weight input");
@@ -164,4 +164,23 @@ function adjustCounter(operator, product_id) {
       allRows();
     }
   }
+}
+function sendData(params) {
+  var xhr = new XMLHttpRequest();
+  let data = new URLSearchParams(params).toString();
+  var url = "app/models/check.php";
+
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      // Обработка ответа от сервера
+      document.getElementById("result").innerHTML = xhr.responseText;
+    }
+  };
+
+  // Подготовка данных для отправки
+  console.log(data);
+  xhr.send(data);
 }

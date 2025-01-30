@@ -1,21 +1,11 @@
+<?php include $_SERVER["DOCUMENT_ROOT"] . "/app/database/db.php"; ?>
+
+
 <?php
-
-include $_SERVER["DOCUMENT_ROOT"] . "/app/database/db.php";
-//session_start();
-//var_dump($_POST);
-if (isset($_SESSION['id_active_product'])) {
-    $product_edit = selectOne('products', ['id' => $_SESSION['id_active_product']]);
-    // tt($product_edit);
-}
-
-
+//Додавання товару через Штріх-код
 if (isset($_POST['barcode'])) {
     // Отримуємо код із POST-запиту
     $bar = trim($_POST['barcode']); // Прибираємо зайві пробіли
-
-
-
-
 
     // Перевіряємо, чи існує штрих-код у базі
     $barcode = selectOne('barcode', ['code' => $bar]);
@@ -57,7 +47,32 @@ if (isset($_POST['barcode'])) {
 
     // Додаємо продукт до кошика
     $_SESSION['cart'][] = $product;
+    if (isset($_SESSION['cart'])) {
+        $string_id = count($_SESSION['cart']) - 1;
+        //$product_active = isset($_SESSION['cart'][$string_id]) ? $_SESSION['cart'][$string_id] : '';
+    }
+
     // var_dump($_SESSION['cart']);
     // Виводимо вміст кошика для перевірки
     //tt($_SESSION['cart']);
+}
+
+//Обробка обраного товару у чеку
+if (isset($_POST['string_id'])) {
+
+    $string_id = isset($_POST['string_id']) ? $_POST['string_id'] : '';
+    $product_active = isset($_SESSION['cart'][$string_id]) ? $_SESSION['cart'][$string_id] : '';
+    $quantity = isset($_POST['quantity']) ? $_POST['quantity'] : 0;
+    if ($quantity > 0) {
+        $_SESSION['cart'][$string_id]['quantity'] = $quantity;
+    }
+} else {
+    //echo "POST undefined";
+}
+
+//Видалення обраного товару
+if (isset($_POST['deleteStringInCheck'])) {
+    //tt($_SESSION['cart']);
+    unset($_SESSION['cart'][$_POST['deleteStringInCheck']]);
+    $_SESSION['cart'] = array_values($_SESSION['cart']);
 }

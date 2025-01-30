@@ -1,14 +1,16 @@
 <?php
 
 $driver = 'mysql';
-
+$host = 'localhost';
 if ($_SERVER['DOCUMENT_ROOT'] == '/Applications/XAMPP/xamppfiles/hosts/cashier-workplace/src/') {
-    $host = '127.0.0.1';
+    $db_name = 'smile';
+    $db_user = 'root';
+    $db_pass = '';
+} elseif ($_SERVER['DOCUMENT_ROOT'] == '/Applications/XAMPP/xamppfiles/htdocs') {
     $db_name = 'smile';
     $db_user = 'root';
     $db_pass = '';
 } else {
-    $host = 'localhost';
     $db_name = 'admin_smile';
     $db_user = 'admin_smile';
     $db_pass = 'Q!w2e3r4t5';
