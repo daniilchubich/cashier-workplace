@@ -48,8 +48,9 @@ body {
   color: #000;
 }
 
-.navbar-item span {
-  font-size: 18px;
+.navbar-item span,
+.navbar-item a {
+  font-size: 16px !important;
 }
 
 .dropdown-menu[data-bs-popper].dropdown-to-right {
@@ -227,8 +228,12 @@ body {
   background-color: #d7f3d9;
 }
 
+.content-single .single-up {
+  padding: 10px 25px;
+}
+
 .content-single .single-top {
-  padding: 40px 25px;
+  padding: 10px 25px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -288,6 +293,7 @@ body {
 .content-single .single-bottom .weight input {
   font-weight: 700;
   text-align: center;
+  color: #000;
 }
 
 .content-single .single-bottom .weight input::placeholder {
@@ -312,6 +318,12 @@ body {
   border-radius: 4px;
   margin-inline: 4px;
   box-shadow: 1px 1px 1px rgba(130, 130, 130, 0.22);
+}
+
+.content-single .single-bottom .weight input::placeholder,
+.content-single .single-bottom .weight input:disabled {
+  color: #000;
+  font-weight: 700;
 }
 
 .content-single .single-bottom .discount {
@@ -363,6 +375,12 @@ body {
   font-size: 24px;
 }
 
+.content-single .single-bottom *:disabled {
+  background-color: #fff;
+  color: #000;
+  font-weight: 700;
+}
+
 #barcodeForm .modal .modal-body input {
   width: 100%;
   outline: none;
@@ -386,4 +404,18 @@ body {
   height: -webkit-calc(100vh - 273px);
   height: calc(100vh - 273px);
   overflow-y: scroll;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  background-color: #d7f3d9;
+}
+
+.search-box input {
+  width: 60%;
+  outline: none;
+  border: none;
 }

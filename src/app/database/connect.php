@@ -3,11 +3,11 @@
 $driver = 'mysql';
 $host = 'localhost';
 if ($_SERVER['DOCUMENT_ROOT'] == '/Applications/XAMPP/xamppfiles/hosts/cashier-workplace/src/') {
-    $db_name = 'smile';
+    $db_name = 'test_smile';
     $db_user = 'root';
     $db_pass = '';
 } elseif ($_SERVER['DOCUMENT_ROOT'] == '/Applications/XAMPP/xamppfiles/htdocs') {
-    $db_name = 'smile';
+    $db_name = 'test_smile';
     $db_user = 'root';
     $db_pass = '';
 } else {

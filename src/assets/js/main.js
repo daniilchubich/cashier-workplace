@@ -23,10 +23,21 @@ function allRows() {
 function getBarcodeInput() {
   const barcodeInput = document.getElementById("barcode");
   const valueBarcodeInput = barcodeInput.value;
+  barcodeInput.value = "";
   sendData({
     barcode: valueBarcodeInput,
   });
 }
+
+function getPhoneForDiscont() {
+  const barcodeInput = document.getElementById("phoneForDiscont");
+  const valueBarcodeInput = barcodeInput.value;
+  barcodeInput.value = "";
+  sendData({
+    phoneForDiscont: valueBarcodeInput,
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const barcodeInput = document.getElementById("barcode");
 
@@ -163,6 +174,12 @@ function adjustCounter(operator, product_id) {
       updateProduct(idValue - 1, currentValue, sum, product_id);
       allRows();
     }
+    if (operator == "input") {
+      let quantyti = inputField.value;
+      let sum = priceValue * quantyti;
+      updateProduct(idValue - 1, quantyti, sum, product_id);
+      allRows();
+    }
   }
 }
 function sendData(params) {
@@ -182,5 +199,65 @@ function sendData(params) {
 
   // Подготовка данных для отправки
   console.log(data);
+  xhr.send(data);
+}
+
+// function sendData(params) {
+//   var xhr = new XMLHttpRequest();
+//   let data = new URLSearchParams(params).toString();
+//   var url = "app/models/check.php";
+
+//   xhr.open("POST", url, true);
+//   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+//   xhr.onreadystatechange = function () {
+//     if (xhr.readyState === 4 && xhr.status === 200) {
+//       // Обработка ответа от сервера
+//       document.getElementById("result").innerHTML = xhr.responseText;
+//     }
+//   };
+
+//   // Подготовка данных для отправки
+//   console.log(data);
+//   xhr.send(data);
+// }
+//alert(Корзіна пустая);
+function openCatalog() {
+  var xhr = new XMLHttpRequest();
+  var url = "app/models/catalog.php";
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  //console.log(url);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      // Обработка ответа от сервера
+      document.getElementById("result").innerHTML = xhr.responseText;
+    }
+  };
+
+  // Подготовка данных для отправки
+
+  //var data = `string_id=${encodeURIComponent(string_id)}`; // Подставьте свои данные
+  //console.log(data);
+  xhr.send();
+  //allRows();
+}
+
+function checkAction(check_status) {
+  var xhr = new XMLHttpRequest();
+
+  var url = "app/models/check.php";
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      // Обработка ответа от сервера
+      document.getElementById("result").innerHTML = xhr.responseText;
+    }
+  };
+
+  // Подготовка данных для отправки
+  var data = `check_action=1&${check_status}=1`; // Подставьте свои данные
   xhr.send(data);
 }

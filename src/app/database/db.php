@@ -13,7 +13,6 @@ function tt($value)
     echo '</pre>';
     //exit();
 }
-
 function dbCheckError($query)
 {
     $errInfo = $query->errorInfo();
@@ -24,6 +23,29 @@ function dbCheckError($query)
     return true;
 }
 
+function updateOrAddSessionCart($array, $product)
+{
+    for ($i = 0; $i <= count($array); $i++) {
+
+        if (isset($array[$i]['id']) && $array[$i]['id'] === $product['id']) {
+
+            $_SESSION['cart'][$i]['quantity']++;
+            //$string_id = count($_SESSION['cart']) - 1;
+            return $i;
+        }
+    }
+    $_SESSION['cart'][] = $product; // Если не найден, добавляем новый элемент
+    return count($_SESSION['cart']) - 1;
+}
+
+function countStringInTable($table)
+{
+    global $pdo;
+
+    $stmt = $pdo->query("SELECT COUNT(*) FROM $table");
+    $count = $stmt->fetchColumn();
+    return $count;
+}
 function selectAll($table, $params = [])
 {
     global $pdo;
@@ -103,11 +125,7 @@ function insert($table, $params)
     dbCheckError($query);
     return $pdo->lastInsertId();
 }
-$arrData = [
-    'admin' => '0',
 
-
-];
 
 function update($table, $id, $params)
 {
@@ -144,6 +162,47 @@ function delete($table, $id)
     dbCheckError($query);
 }
 
+function selectAllCheck($params = [])
+{
+    global $pdo;
+
+    $sql = "SELECT check_main.*,shop.name, discount.phone_number, discount.first_name, discount.second_name  
+    FROM doc_check_main AS check_main 
+    JOIN ref_shops AS shop ON check_main.shop_id = shop.id
+    JOIN ref_check_statuses AS check_status ON check_main.check_status_id = check_status.id  
+    JOIN ref_discounts AS discount ON check_main.discount_id = discount.id OR check_main.discount_id = 0";
+
+    if (!empty($params)) {
+        $i = 0;
+        foreach ($params as $key => $value) {
+            if (!is_numeric($value)) {
+                $value = "'" . $value . "'";
+            }
+            if ($i === 0) {
+                $sql = $sql . " WHERE check_main.$key=$value";
+            } else {
+                $sql = $sql . " AND check_main.$key=$value";
+            }
+            $i++;
+        }
+    }
+
+    $query = $pdo->prepare($sql);
+    $query->execute();
+    dbCheckError($query);
+    return $query->fetchAll();
+}
+
+function selectAllCheckProducts($id)
+{
+    global $pdo;
+
+    $sql = "SELECT check_product.*, products.name FROM doc_check_products AS check_product JOIN ref_products AS products ON check_product.product_id = products.id WHERE check_product.check_id=$id";
+    $query = $pdo->prepare($sql);
+    $query->execute();
+    dbCheckError($query);
+    return $query->fetchAll();
+}
 function selectAllFromPostsWithUsers($table1, $table2)
 {
     global $pdo;
