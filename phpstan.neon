@@ -1,5 +1,5 @@
 parameters:
-    level: 1
+    level: 
     paths:
         - src # Або інша папка з вашим PHP-кодом
     ignoreErrors: []

@@ -70,7 +70,7 @@
                                         <td><?php if (empty($_SESSION['cart'])): ?>
                                             <a class="navbar-item nav-link active" href="#" data-bs-dismiss="modal"
                                                 aria-label="Close"
-                                                onclick="sendData({check_deffered_id: '<?= isset($_SESSION['check_deffered'][$i]['id']) ? addslashes($_SESSION['check_deffered'][$i]['id']) :  null ?>'})()">
+                                                onclick="sendData({check_deffered_id: '<?= isset($_SESSION['check_deffered'][$i]['id']) ? addslashes($_SESSION['check_deffered'][$i]['id']) : null ?>'})()">
                                                 <span>Відкрити</span>
                                             </a>
 

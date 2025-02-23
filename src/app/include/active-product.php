@@ -33,8 +33,8 @@ if (isset($_POST['string_id'])) {
                 onclick="adjustCounter('minus', <?= isset($product_active['price']) ? $product_active['id'] : 0 ?>)">-</span>
             <input type="text" placeholder="1" value="<?php if (isset($string_id)) {
 
-                                                            echo isset($_SESSION['cart'][$string_id]['quantity']) ? $_SESSION['cart'][$string_id]['quantity'] : 1;
-                                                        } ?>">
+                echo isset($_SESSION['cart'][$string_id]['quantity']) ? $_SESSION['cart'][$string_id]['quantity'] : 1;
+            } ?>">
             <span class="weight-plus"
                 onclick="adjustCounter('plus',<?= isset($product_active['price']) ? $product_active['id'] : 0 ?>)">+</span>
             <!-- <span class="weight-basket">
@@ -50,8 +50,8 @@ if (isset($_POST['string_id'])) {
         <div class="sum">
             <span>Усього за товар:</span>
             <b><?php if (isset($string_id)) {
-                    echo $_SESSION['cart'][$string_id]['price'] * $_SESSION['cart'][$string_id]['quantity'];
-                } ?>
+                echo $_SESSION['cart'][$string_id]['price'] * $_SESSION['cart'][$string_id]['quantity'];
+            } ?>
                 грн.</b>
         </div>
     </div>

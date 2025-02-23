@@ -32,17 +32,17 @@
 
             <div class="modal-body">
                 <?php include $_SERVER['DOCUMENT_ROOT'] . "/app/models/catalog.php"
-                    ?>
+                ?>
                 <!-- <div class="wrapper">
                     Navbar start
-                    <?php //include $_SERVER['DOCUMENT_ROOT'] . "/cashier-workplace-master/src" . "/app/include/navbar.php" 
-                    ?>
+                    <?php //include $_SERVER['DOCUMENT_ROOT'] . "/cashier-workplace-master/src" . "/app/include/navbar.php"
+                ?>
                     
                     Navbar end
 
                     Modal
-                    <?php //include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-input-barcode.php"; 
-                    ?>
+                    <?php //include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-input-barcode.php";
+                ?>
 
                     <div class="content">
                         <div class="search-box">

@@ -1,13 +1,13 @@
 <div class="wrapper">
     <!-- Navbar start -->
-    <?php //include $_SERVER['DOCUMENT_ROOT'] . "/cashier-workplace-master/src" . "/app/include/navbar.php" 
+    <?php //include $_SERVER['DOCUMENT_ROOT'] . "/cashier-workplace-master/src" . "/app/include/navbar.php"
     ?>
     <?php //include $_SERVER['DOCUMENT_ROOT'] . "/app/include/navbar.php"
     ?>
     <!-- Navbar end -->
 
     <!-- Modal -->
-    <?php //include $_SERVER['DOCUMENT_ROOT'] . "/cashier-workplace-master/src" . "/app/include/modal-input-barcode.php"; 
+    <?php //include $_SERVER['DOCUMENT_ROOT'] . "/cashier-workplace-master/src" . "/app/include/modal-input-barcode.php";
     ?>
 
     <div class="content">

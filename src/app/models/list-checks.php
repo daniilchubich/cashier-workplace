@@ -1,4 +1,4 @@
-<?php //include $_SERVER["DOCUMENT_ROOT"] . "/app/controllers/check.php"; 
+<?php //include $_SERVER["DOCUMENT_ROOT"] . "/app/controllers/check.php";
 tt($_SESSION['check_list']);
 ?>
 <div class="wrapper">
@@ -29,7 +29,7 @@ tt($_SESSION['check_list']);
                                 <td><?= $_SESSION['check_list'][$i]['doc_sum'] ?> грн.</td>
                                 <td>
                                     <a class="navbar-item nav-link active" href="#" data-bs-dismiss="modal" aria-label="Close"
-                                        onclick="sendData({check_deffered_id: '<?= isset($_SESSION['check_list'][$i]['id']) ? addslashes($_SESSION['check_deffered'][$i]['id']) :  null ?>'})()">
+                                        onclick="sendData({check_deffered_id: '<?= isset($_SESSION['check_list'][$i]['id']) ? addslashes($_SESSION['check_deffered'][$i]['id']) : null ?>'})()">
                                         <span>Відкрити</span>
                                     </a>
                                 </td>
