@@ -54,9 +54,11 @@
                                             <tr>
                                                 <td><?= $_SESSION['check_list'][$i]['cheсk_number'] ?></td>
                                                 <td><?= substr($_SESSION['check_list'][$i]['cheсk_data'], 11) ?></td>
-                                                <td>+380<?= $_SESSION['check_list'][$i]['phone_number'] ?></td>
+                                                <td><?= isset($_SESSION['check_list'][$i]['phone_number']) ? '+380' . $_SESSION['check_list'][$i]['phone_number'] : '' ?>
+                                                </td>
                                                 <td><?= $_SESSION['check_list'][$i]['name'] ?></td>
-                                                <td><?= $_SESSION['check_list'][$i]['check_status_id'] ?></td>
+                                                <td><?= $_SESSION['check_list'][$i]['check_status_id'] == 1 ? 'Відкладений' :  'Пробитий' ?>
+                                                </td>
                                                 <td><?= $_SESSION['check_list'][$i]['doc_sum'] ?> грн.</td>
                                             </tr>
                                         <?php endfor; ?>

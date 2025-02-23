@@ -27,7 +27,7 @@ function updateOrAddSessionCart($array, $product)
 {
     for ($i = 0; $i <= count($array); $i++) {
 
-        if (isset($array[$i]['id']) && $array[$i]['id'] === $product['id']) {
+        if (isset($array[$i]['product_id_bas']) && $array[$i]['product_id_bas'] === $product['product_id_bas']) {
 
             $_SESSION['cart'][$i]['quantity']++;
             //$string_id = count($_SESSION['cart']) - 1;
@@ -106,25 +106,29 @@ function insert($table, $params)
     $i = 0;
     $coll = '';
     $mask = '';
+    $update = '';
     foreach ($params as $key => $value) {
         if ($i === 0) {
-            $coll = $coll . "$key";
-            $mask = $mask . "'" . "$value" . "'";
+            $coll = "$key";
+            $mask = "'$value'";
+            $update = "$key = '$value'";
         } else {
-            $coll = $coll . ", $key";
-            $mask = $mask . ", '" . "$value" . "'";
+            $coll .= ", $key";
+            $mask .= ", '$value'";
+            $update .= ", $key = '$value'";
         }
-
         $i++;
     }
 
-    $sql = "INSERT INTO $table ($coll) VALUES ($mask)";
+    $sql = "INSERT INTO $table ($coll) VALUES ($mask) ON DUPLICATE KEY UPDATE $update";
 
     $query = $pdo->prepare($sql);
     $query->execute();
     dbCheckError($query);
+
     return $pdo->lastInsertId();
 }
+
 
 
 function update($table, $id, $params)
@@ -168,9 +172,10 @@ function selectAllCheck($params = [])
 
     $sql = "SELECT check_main.*,shop.name, discount.phone_number, discount.first_name, discount.second_name  
     FROM doc_check_main AS check_main 
-    JOIN ref_shops AS shop ON check_main.shop_id = shop.id
+    JOIN ref_shops AS shop ON check_main.shop_id_bas = shop.id_bas
     JOIN ref_check_statuses AS check_status ON check_main.check_status_id = check_status.id  
-    JOIN ref_discounts AS discount ON check_main.discount_id = discount.id OR check_main.discount_id = 0";
+    LEFT JOIN ref_discounts AS discount ON check_main.discount_id_bas = discount.id_bas";
+
 
     if (!empty($params)) {
         $i = 0;
@@ -197,7 +202,7 @@ function selectAllCheckProducts($id)
 {
     global $pdo;
 
-    $sql = "SELECT check_product.*, products.name FROM doc_check_products AS check_product JOIN ref_products AS products ON check_product.product_id = products.id WHERE check_product.check_id=$id";
+    $sql = "SELECT check_product.*, products.name FROM doc_check_products AS check_product JOIN ref_products AS products ON check_product.product_id_bas = products.id_bas WHERE check_product.check_id=$id";
     $query = $pdo->prepare($sql);
     $query->execute();
     dbCheckError($query);

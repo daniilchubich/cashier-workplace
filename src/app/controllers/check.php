@@ -12,16 +12,17 @@ if (isset($_POST['barcode'])) {
         echo "Штрих-код не знайдено.";
         return; // Завершуємо, якщо штрих-код не знайдено
     }
+
     //$_POST['barcode'] = '';
     // Отримуємо інформацію про продукт за його ID
-    $product = selectOne('ref_products', ['id' => $barcode["product_id"]]);
+    $product = selectOne('ref_products', ['id_bas' => $barcode["product_id_bas"]]);
     if (!$product) {
         echo "Продукт із цим штрих-кодом не знайдено.";
         return; // Завершуємо, якщо продукт не знайдено
     }
 
     // Отримуємо ціну продукту
-    $price = selectOne('info_prices', ['product_id' => $barcode["product_id"], 'price_type_id' => $_SESSION['work_shift']["price_type_id"]]);
+    $price = selectOne('info_prices', ['product_id_bas' => $barcode["product_id_bas"]]);
     if (!$price) {
         echo "Ціна для цього продукту не знайдена.";
         return; // Завершуємо, якщо ціна не знайдена
@@ -31,7 +32,7 @@ if (isset($_POST['barcode'])) {
     if (is_array($product) && is_array($price)) {
 
         $product = [
-            "id" => $product["id"],           // Общий ID
+            "product_id_bas" => $product["id_bas"],           // Общий ID
             "name" => $product["name"],
             "full_name" => $product["full_name"],
             "price" => $price["price"],     // Цена из первого массива
@@ -40,13 +41,14 @@ if (isset($_POST['barcode'])) {
             "sum" => ''
         ];
     }
+
     // Ініціалізуємо кошик у сесії, якщо ще не ініціалізовано
     if (!isset($_SESSION['cart'])) {
         $_SESSION['cart'] = [];
     }
-
     // Додаємо продукт до кошика
     $string_id = updateOrAddSessionCart($_SESSION['cart'], $product);
+    //tt($_SESSION['cart']);
 }
 
 //Обробка обраного товару у чеку
@@ -93,33 +95,42 @@ if (isset($_POST['phoneForDiscont'])) {
 //Провести чек
 
 if (isset($_POST['check_action'])) {
+    unset($_SESSION['check_deffered']);
+    //tt($_SESSION['check_deffered']);
+    unset($_SESSION['check_list']);
     //echo "123";
     if (isset($_SESSION['cart'])) {
         $cheсk_status_id = isset($_POST['otlozhen']) ? 1 : (isset($_POST['proveden']) ? 2 : 0);
-        //$count_string =  countStringInTable('doc_check_main');
         $cheсk_number = str_pad(countStringInTable('doc_check_main') + 1, 7, "0", STR_PAD_LEFT);
+        isset($_SESSION['total_sale']) && isset($_SESSION['total_amount']) ? $sum = $_SESSION['total_amount'] - $_SESSION['total_sale'] : $sum = $_SESSION['total_amount'];
 
         $params_check_main = [
             'cheсk_number' => $cheсk_number,
             'check_status_id' => $cheсk_status_id,
             'user_id' => $_SESSION['work_shift']['user_id'],
-            'shop_id' => $_SESSION['work_shift']['shop_id'],
-            'price_type_id' => $_SESSION['work_shift']['price_type_id'],
-            'discount_id' => isset($_SESSION['discount']['id']) ? $_SESSION['discount']['id'] : 0,
-            'doc_sum' => isset($_SESSION['total_amount']) ? $_SESSION['total_amount'] : 0
+            'shop_id_bas' => $_SESSION['work_shift']['shop_id_bas'],
+            'price_type_id_bas' => $_SESSION['work_shift']['price_type_id_bas'],
+            'discount_id_bas' => isset($_SESSION['discount']['id_bas']) ? $_SESSION['discount']['id_bas'] : 0,
+            'doc_sum' => isset($_SESSION['total_amount']) ? $sum : 0
         ];
 
         $id_check_name = insert('doc_check_main', $params_check_main);
         $_SESSION['check_deffered'] = selectAllCheck(['check_status_id' => 1]);
+        $_SESSION['check_list'] = selectAllCheck();
+        //tt($_SESSION['check_list']);
         if (isset($_SESSION['cart'])) {
             for ($i = 0; $i < count($_SESSION['cart']); $i++) {
                 $sum = $_SESSION['cart'][$i]['price'] * $_SESSION['cart'][$i]['quantity'];
-                $sum_discount = round($_SESSION['cart'][$i]['price'] * $_SESSION['cart'][$i]['quantity'] * 3 / 100, 2);
+                if (isset($_SESSION['discount'])) {
+                    $sum_discount = round($sum * $_SESSION['discount']['percent_discount'] / 100, 2);
+                } else {
+                    $sum_discount = 0;
+                }
                 $sum_without_discount =  $sum - $sum_discount;
 
                 $params_check_product = [
                     'check_id' => $id_check_name,
-                    'product_id' => $_SESSION['cart'][$i]['id'],
+                    'product_id_bas' => $_SESSION['cart'][$i]['product_id_bas'],
                     //'characteristic_id' => $_SESSION['cart']['characteristic_id'],
                     'price' => $_SESSION['cart'][$i]['price'],
                     'quantity' => $_SESSION['cart'][$i]['quantity'],
@@ -128,8 +139,7 @@ if (isset($_POST['check_action'])) {
                     'sum_without_discount' => $sum_without_discount,
                 ];
                 insert('doc_check_products', $params_check_product);
-                $_SESSION['check_list'] = selectAllCheck();
-                //tt($_SESSION['check_list']);
+                //tt($params_check_product);
             }
         }
         unset($_SESSION['cart']);
@@ -147,12 +157,12 @@ if (isset($_POST['check_action'])) {
 
 if (isset($_POST['check_deffered_id'])) {
     $check_deffered = selectOne('doc_check_main', ['id' => $_POST['check_deffered_id']]);
-    tt($check_deffered);
-    $discount = selectOne('ref_discounts', ['id' => $check_deffered['discount_id']]);
+    //tt($check_deffered);
+    $discount = selectOne('ref_discounts', ['id_bas' => $check_deffered['discount_id_bas']]);
     $_SESSION['discount'] = isset($discount) ? $discount : null;
     $_SESSION['cart'] = selectAllCheckProducts($_POST['check_deffered_id']);
-    tt($_SESSION['cart']);
+    //tt($_SESSION['cart']);
     // Додаємо продукт до кошика
     //$string_id = updateOrAddSessionCart($_SESSION['cart'], $product);
-    echo "123";
+    //echo "123";
 }

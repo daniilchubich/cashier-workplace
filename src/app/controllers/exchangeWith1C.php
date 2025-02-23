@@ -1,18 +1,15 @@
-<?php
-$url = "https://uztest.kraft.net.ua:8443/smile-test-bor/hs/rts/products";
-$data = ["username" => "test", "password" => "1234"];
-$jsonData = json_encode($data);
+<?php include $_SERVER["DOCUMENT_ROOT"] . "/app/controllers/functions.php";
+getAddProducts();
+getAddDiscounts();
+getAddClassifier();
+getAddPrices();
+getAddBarcode();
+//tt($response->ref_products);
 
-$ch = curl_init($url);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    "Content-Type: application/json",
-    "Content-Length: " . strlen($jsonData)
-]);
-
-$response = curl_exec($ch);
-curl_close($ch);
-
-echo $response;
+// var_dump(count($response->ref_discounts));
+// // for ($i = 0; $i < 1000; $i++) {
+// //     if ($response->ref_products[$i]->is_group == 1) {
+// //         tt($response->ref_products[$i]);
+// //     }
+// // }
+// tt($response->ref_discounts);
