@@ -23,3 +23,13 @@
         </div>
     </div>
 </form>
+<script>
+    // Функция для обработки нажатия Enter
+    function handleEnter(event) {
+        if (event.keyCode === 13) { // Проверка на Enter (код клавиши 13)
+            event.preventDefault(); // Предотвращаем стандартное поведение
+            getBarcodeInput(); // Вызываем функцию для продолжения (отправка данных)
+            $('#modalBarcode').modal('hide'); // Закрытие модалки
+        }
+    }
+</script>

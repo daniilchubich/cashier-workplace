@@ -65,6 +65,7 @@ function selectAll($table, $params = [])
             $i++;
         }
     }
+    $sql .= " ORDER BY is_group DESC, name ASC";
     $query = $pdo->prepare($sql);
     $query->execute();
 
@@ -166,15 +167,16 @@ function delete($table, $id)
     dbCheckError($query);
 }
 
-function selectAllCheck($params = [])
+function selectAllCheck($limit, $offset, $params = [])
 {
     global $pdo;
 
-    $sql = "SELECT check_main.*,shop.name, discount.phone_number, discount.first_name, discount.second_name  
+    $sql = "SELECT check_main.*, shop.name, discount.phone_number, discount.first_name, discount.second_name  
     FROM doc_check_main AS check_main 
     JOIN ref_shops AS shop ON check_main.shop_id_bas = shop.id_bas
     JOIN ref_check_statuses AS check_status ON check_main.check_status_id = check_status.id  
-    LEFT JOIN ref_discounts AS discount ON check_main.discount_id_bas = discount.id_bas";
+    LEFT JOIN ref_discounts AS discount ON check_main.discount_id_bas = discount.id_bas
+    ";
 
 
     if (!empty($params)) {
@@ -191,7 +193,7 @@ function selectAllCheck($params = [])
             $i++;
         }
     }
-
+    $sql .= " ORDER BY check_main.id DESC LIMIT $limit OFFSET $offset";
     $query = $pdo->prepare($sql);
     $query->execute();
     dbCheckError($query);
@@ -203,6 +205,40 @@ function selectAllCheckProducts($id)
     global $pdo;
 
     $sql = "SELECT check_product.*, products.name FROM doc_check_products AS check_product JOIN ref_products AS products ON check_product.product_id_bas = products.id_bas WHERE check_product.check_id=$id";
+    $query = $pdo->prepare($sql);
+    $query->execute();
+    dbCheckError($query);
+    return $query->fetchAll();
+}
+function selectAllProducts($price_type_id, $params = [])
+{
+    global $pdo;
+
+    $sql = "SELECT product.*, price.price
+    FROM ref_products AS product
+    JOIN info_prices AS price ON product.id_bas = price.product_id_bas
+    WHERE price.price_type_id_bas = '$price_type_id'
+    ";
+
+
+
+    if (!empty($params)) {
+        $i = 0;
+        foreach ($params as $key => $value) {
+            if (!is_numeric($value)) {
+                $value = "'" . $value . "'";
+            }
+            if ($i === 0) {
+                $sql = $sql . " AND product.$key=$value";
+            } else {
+                $sql = $sql . " AND product.$key=$value";
+            }
+            $i++;
+        }
+    }
+    $sql .= " ORDER BY product.name ASC";
+    //tt($sql);
+    //die();
     $query = $pdo->prepare($sql);
     $query->execute();
     dbCheckError($query);

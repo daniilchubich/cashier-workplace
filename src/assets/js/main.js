@@ -28,28 +28,18 @@ function getBarcodeInput() {
     barcode: valueBarcodeInput,
   });
 }
-
-function getPhoneForDiscont() {
-  const barcodeInput = document.getElementById("phoneForDiscont");
-  const valueBarcodeInput = barcodeInput.value;
-  barcodeInput.value = "";
-  sendData({
-    phoneForDiscont: valueBarcodeInput,
-  });
-}
-
 document.addEventListener("DOMContentLoaded", () => {
-  const barcodeInput = document.getElementById("barcode");
+  //const barcodeInput = document.getElementById("barcode");
 
   //console.log(valueBarcodeInput);
   // Событие Enter
-  const enterEvent = new KeyboardEvent("keydown", {
-    key: "Enter",
-    keyCode: 13, // Код клавиши Enter
-    code: "Enter",
-    which: 13,
-    bubbles: true, // Важно для передачи события
-  });
+  // const enterEvent = new KeyboardEvent("keydown", {
+  //   key: "Enter",
+  //   keyCode: 13, // Код клавиши Enter
+  //   code: "Enter",
+  //   which: 13,
+  //   bubbles: true, // Важно для передачи события
+  // });
 
   let barcodeData = ""; // Для накопления данных
   let timer;
@@ -67,12 +57,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (event.key === "Enter") {
       event.preventDefault(); // Останавливаем стандартное поведение
 
-      if (barcodeData.trim()) {
+      if (barcodeData.length === 13 && barcodeData.trim()) {
         // Если данные не пусты, помещаем их в input
         //barcodeInput.value = barcodeData;
         sendData({
           barcode: barcodeData,
         });
+        $("#barcodeForm").modal("hide");
         allRows();
         console.log(`Получены данные: ${barcodeData}`);
 
@@ -89,6 +80,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 1000);
   });
 });
+
+function getPhoneForDiscont() {
+  const barcodeInput = document.getElementById("phoneForDiscont");
+  const valueBarcodeInput = barcodeInput.value;
+  barcodeInput.value = "";
+  sendData({
+    phoneForDiscont: valueBarcodeInput,
+  });
+}
 
 function sendActiveProduct(string_id) {
   //document.getElementById("index").style.display = "none";
@@ -145,7 +145,7 @@ function adjustCounter(operator, product_id) {
 
   if (activProductTr) {
     const idElement = activProductTr.querySelector("#id");
-    console.log(idElement);
+    //console.log(idElement);
     const idValue = parseFloat(idElement.textContent.trim());
     const priceElement = activProductTr.querySelector("#price");
     const priceValue = parseFloat(priceElement.textContent.trim());
@@ -175,13 +175,19 @@ function adjustCounter(operator, product_id) {
       allRows();
     }
     if (operator == "input") {
-      let quantyti = inputField.value;
+      let quantyti = Number(inputField.value);
+      //console.log(quantyti);
       let sum = priceValue * quantyti;
-      updateProduct(idValue - 1, quantyti, sum, product_id);
+      inputField.addEventListener("blur", () => {
+        quantyti += 0;
+        console.log("Фокус потерян у input#quantity");
+        updateProduct(idValue - 1, quantyti, sum, product_id);
+      });
       allRows();
     }
   }
 }
+
 function sendData(params) {
   var xhr = new XMLHttpRequest();
   let data = new URLSearchParams(params).toString();
@@ -202,45 +208,85 @@ function sendData(params) {
   xhr.send(data);
 }
 
-// function sendData(params) {
-//   var xhr = new XMLHttpRequest();
-//   let data = new URLSearchParams(params).toString();
-//   var url = "app/models/check.php";
+function openListChecks(countRows, limit, type = "") {
+  let modal; // Объявляем переменную заранее
 
-//   xhr.open("POST", url, true);
-//   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  if (type == "deffered") {
+    modal = document.getElementById("ModalDefferedChecks");
+  } else if (type == "catalog") {
+    modal = document.getElementById("ModalCatalog");
+  } else {
+    modal = document.getElementById("ModalChecks");
+  }
 
-//   xhr.onreadystatechange = function () {
-//     if (xhr.readyState === 4 && xhr.status === 200) {
-//       // Обработка ответа от сервера
-//       document.getElementById("result").innerHTML = xhr.responseText;
-//     }
-//   };
+  let tableBody = modal.querySelector("#catalogRows");
+  let prevPageBtn = modal.querySelector("#prevPage");
+  let nextPageBtn = modal.querySelector("#nextPage");
+  let currentPageValue = modal.querySelector("#currentPage");
+  let currentQuantityPagesElem = modal.querySelector(
+    "#quantityPagesListChecks"
+  );
+  let errorLoadPageElem = modal.querySelector("#errorLoadPage");
+  let currentPage = 1;
+  let totalPages = countRows / limit; // Можно получить динамически с сервера
 
-//   // Подготовка данных для отправки
-//   console.log(data);
-//   xhr.send(data);
-// }
-//alert(Корзіна пустая);
-function openCatalog() {
-  var xhr = new XMLHttpRequest();
-  var url = "app/models/catalog.php";
-  xhr.open("POST", url, true);
-  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  //console.log(url);
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      // Обработка ответа от сервера
-      document.getElementById("result").innerHTML = xhr.responseText;
+  function loadPage(page) {
+    const postData = new FormData();
+    postData.append("page", page);
+    postData.append("limit", limit);
+    postData.append("totalPages", totalPages);
+    if (type) {
+      postData.append("type", type);
     }
-  };
 
-  // Подготовка данных для отправки
+    fetch("app/controllers/list-check.php", {
+      method: "POST",
+      body: postData,
+    })
+      .then((response) => response.text())
+      .then((data) => {
+        tableBody.innerHTML = data;
+        currentPageValue.value = page;
+        currentQuantityPagesElem.textContent = ` ${page}/${totalPages}`;
+        currentPage = page;
 
-  //var data = `string_id=${encodeURIComponent(string_id)}`; // Подставьте свои данные
-  //console.log(data);
-  xhr.send();
-  //allRows();
+        prevPageBtn.disabled = currentPage === 1;
+        nextPageBtn.disabled = currentPage === totalPages;
+      })
+      .catch((error) => console.error("Ошибка:", error));
+  }
+  currentPageValue.addEventListener("input", (event) => {
+    event.target.value = event.target.value.replace(/\D/g, ""); // Удаляет все НЕ цифры
+  });
+  currentPageValue.addEventListener("change", () => {
+    currentPage = currentPageValue.value;
+    if (currentPage <= totalPages) {
+      loadPage(currentPage);
+    } else {
+      errorLoadPageElem.innerHTML =
+        '<span class="alert alert-danger justify-content-center">Такої сторінки не існує!</span>';
+    }
+    //console.log(currentPage);
+  });
+
+  currentPageValue.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      currentPageValue.blur(); // Принудительно убираем фокус, чтобы сработал change
+    }
+  });
+  prevPageBtn.addEventListener("click", () => {
+    if (currentPage > 1) {
+      loadPage(currentPage - 1);
+    }
+  });
+
+  nextPageBtn.addEventListener("click", () => {
+    if (currentPage < totalPages) {
+      loadPage(currentPage + 1);
+    }
+  });
+
+  loadPage(currentPage); // Загружаем первую страницу после загрузки DOM
 }
 
 function checkAction(check_status) {
@@ -259,5 +305,48 @@ function checkAction(check_status) {
 
   // Подготовка данных для отправки
   var data = `check_action=1&${check_status}=1`; // Подставьте свои данные
+  xhr.send(data);
+}
+
+function openCatalog(id_bas = "", level = "") {
+  console.log(id_bas);
+  console.log(level);
+  catalog(id_bas);
+  function catalog(id_bas) {
+    var xhr = new XMLHttpRequest();
+
+    var url = "app/models/catalog.php";
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        // Обработка ответа от сервера
+        document.querySelector("#ModalCatalog #catalogRows").innerHTML =
+          xhr.responseText;
+      }
+    };
+
+    // Подготовка данных для отправки
+    var data = `id_bas=${id_bas}`; // Подставьте свои данные
+    xhr.send(data);
+  }
+
+  var xhr = new XMLHttpRequest();
+
+  var url = "app/models/catalog-tree.php";
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      // Обработка ответа от сервера
+      document.querySelector("#ModalCatalog #catalogTree").innerHTML =
+        xhr.responseText;
+    }
+  };
+
+  // Подготовка данных для отправки
+  var data = `id_bas=${id_bas}&level=${level}`; // Подставьте свои данные
   xhr.send(data);
 }

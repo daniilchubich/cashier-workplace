@@ -1,3 +1,7 @@
+<?php
+//$_SESSION['check_list'] = selectAllCheck();
+//$_SESSION['check_list'] = selectAllCheck('', $offset);
+?>
 <style>
     .catalog-modal .modal-dialog {
         max-width: 80%;
@@ -25,7 +29,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="ModalLabelChecks">
-                    Каталог
+                    Список Чеків
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -57,7 +61,7 @@
                                                 <td><?= isset($_SESSION['check_list'][$i]['phone_number']) ? '+380' . $_SESSION['check_list'][$i]['phone_number'] : '' ?>
                                                 </td>
                                                 <td><?= $_SESSION['check_list'][$i]['name'] ?></td>
-                                                <td><?= $_SESSION['check_list'][$i]['check_status_id'] == 1 ? 'Відкладений' : 'Пробитий' ?>
+                                                <td><?= $_SESSION['check_list'][$i]['check_status_id'] == 1 ? 'Відкладений' :  'Пробитий' ?>
                                                 </td>
                                                 <td><?= $_SESSION['check_list'][$i]['doc_sum'] ?> грн.</td>
                                             </tr>
@@ -67,24 +71,32 @@
                             </table>
                         </div>
                     </div>
-
+                    <!-- <div class="pagination">
+                        <button id="prevPage" class="btn btn-secondary">← Назад</button>
+                        <span id="currentPage">1</span>
+                        <button id="nextPage" class="btn btn-secondary">Вперед →</button>
+                    </div> -->
                 </div>
             </div>
-
-            <div class="modal-footer">
-                <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    Відмінити
-                </button> -->
-                <!-- <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="getBarcodeInput()">
-                        Продовжити
-                    </button> -->
+            <div class="modal-footer justify-content-center">
+                <div class="col-3">К-во Сторінок:<span id="quantityPagesListChecks"></span></div>
+                <div class="pagination col-5 justify-content-center">
+                    <button id="prevPage" class="btn btn-secondary">← Назад</button>
+                    <input type="text" id="currentPage" placeholder="1" onclick="this.select()"
+                        value="<?= isset($page) ? $page : 1 ?>">
+                    <button id="nextPage" class="btn btn-secondary">Вперед →</button>
+                </div>
+                <div class="col-3 d-flex justify-content-end" id="errorLoadPage"></div>
             </div>
+
+
         </div>
     </div>
 </div>
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
+
         let tableBody = document.getElementById("catalogRows");
         //console.log(tableBody);
 
@@ -123,5 +135,6 @@
             //setInterval(autoClickRandomRow, 2000);
         }
 
-    })
+
+    });
 </script>

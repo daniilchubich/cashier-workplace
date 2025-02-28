@@ -1,6 +1,4 @@
-<?php
-
-include $_SERVER["DOCUMENT_ROOT"] . "/app/database/db.php";
+<?php include $_SERVER["DOCUMENT_ROOT"] . "/app/database/db.php";
 function getAddProducts()
 {
 
@@ -24,7 +22,8 @@ function getAddProducts()
             'name' => isset($response[$i]->name) ? $response[$i]->name : null,
             'full_name' => isset($response[$i]->full_name) ? $response[$i]->full_name : null,
             'is_group' => $response[$i]->is_group,
-            'parent_id_bas' => isset($response[$i]->is_group) == 0 ? $response[$i]->parent_id_bas : null,
+            'level' => $response[$i]->level,
+            'parent_id_bas' => $response[$i]->parent_id_bas,
             'articul' => isset($response[$i]->articul) ? $response[$i]->articul : null,
             'description' => isset($response[$i]->description) ? $response[$i]->description : null
         ];

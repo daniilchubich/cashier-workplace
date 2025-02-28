@@ -13,7 +13,7 @@
             <li class="nav-item">
                 <!-- <a class="navbar-item nav-link active" href="#catalog" onclick="openCatalog()"> -->
                 <a class="navbar-item nav-link active" href="#" aria-current="page" data-bs-toggle="modal"
-                    data-bs-target="#exampleModalCatalog" id="show-modal-catalog-btn">
+                    data-bs-target="#ModalCatalog" id="show-modal-catalog-btn" onclick="openCatalog()">
                     <i class="bi bi-search"></i>
                     <span>Каталог</span>
                 </a>
@@ -35,13 +35,15 @@
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
             <a class="navbar-item nav-link active" href="#" aria-current="page" data-bs-toggle="modal"
-                data-bs-target="#ModalDefferedChecks" onclick="">
+                data-bs-target="#ModalDefferedChecks"
+                onclick="openListChecks('<?= countStringInTable('doc_check_main') ?>', '1000', 'deffered')">
                 <span>Відкладені чеки</span>
             </a>
         </li>
         <li class="nav-item">
             <a class="navbar-item nav-link active" href="#" aria-current="page" data-bs-toggle="modal"
-                data-bs-target="#ModalChecks">
+                data-bs-target="#ModalChecks"
+                onclick="openListChecks('<?= countStringInTable('doc_check_main') ?>', '1000')">
                 <span>Список чеків</span>
             </a>
         </li>

@@ -3,24 +3,24 @@
 //tt($_SESSION['check_deffered']);
 ?>
 <style>
-.catalog-modal .modal-dialog {
-    max-width: 80%;
-}
+    .catalog-modal .modal-dialog {
+        max-width: 80%;
+    }
 
-.catalog-modal .search-box {
-    margin: 20px 0;
-}
+    .catalog-modal .search-box {
+        margin: 20px 0;
+    }
 
-.catalog-modal .catalog {
-    height: 50vh;
-    max-height: 50vh;
-    overflow-y: scroll;
-}
+    .catalog-modal .catalog {
+        height: 50vh;
+        max-height: 50vh;
+        overflow-y: scroll;
+    }
 
-.catalog-modal .catalog thead {
-    position: sticky;
-    top: 0;
-}
+    .catalog-modal .catalog thead {
+        position: sticky;
+        top: 0;
+    }
 </style>
 
 <div class="catalog-modal modal fade" id="ModalDefferedChecks" tabindex="-1" aria-labelledby="ModalLabelDefferedChecks"
@@ -59,25 +59,25 @@
                                 </thead>
                                 <tbody id="catalogRows">
                                     <?php if (isset($_SESSION['check_deffered'])): ?>
-                                    <?php for ($i = 0; $i < count($_SESSION['check_deffered']); $i++):  ?>
-                                    <tr>
-                                        <td><?= $_SESSION['check_deffered'][$i]['cheсk_number'] ?></td>
-                                        <td><?= substr($_SESSION['check_deffered'][$i]['cheсk_data'], 11) ?></td>
-                                        <td><?= isset($_SESSION['check_deffered'][$i]['phone_number']) ? '+380' . $_SESSION['check_deffered'][$i]['phone_number'] : '' ?>
-                                        </td>
-                                        <td><?= $_SESSION['check_deffered'][$i]['name'] ?></td>
-                                        <td><?= $_SESSION['check_deffered'][$i]['doc_sum'] ?> грн.</td>
-                                        <td><?php if (empty($_SESSION['cart'])): ?>
-                                            <a class="navbar-item nav-link active" href="#" data-bs-dismiss="modal"
-                                                aria-label="Close"
-                                                onclick="sendData({check_deffered_id: '<?= isset($_SESSION['check_deffered'][$i]['id']) ? addslashes($_SESSION['check_deffered'][$i]['id']) : null ?>'})()">
-                                                <span>Відкрити</span>
-                                            </a>
+                                        <?php for ($i = 0; $i < count($_SESSION['check_deffered']); $i++):  ?>
+                                            <tr>
+                                                <td><?= $_SESSION['check_deffered'][$i]['cheсk_number'] ?></td>
+                                                <td><?= substr($_SESSION['check_deffered'][$i]['cheсk_data'], 11) ?></td>
+                                                <td><?= isset($_SESSION['check_deffered'][$i]['phone_number']) ? '+380' . $_SESSION['check_deffered'][$i]['phone_number'] : '' ?>
+                                                </td>
+                                                <td><?= $_SESSION['check_deffered'][$i]['name'] ?></td>
+                                                <td><?= $_SESSION['check_deffered'][$i]['doc_sum'] ?> грн.</td>
+                                                <td><?php if (empty($_SESSION['cart'])): ?>
+                                                        <a class="navbar-item nav-link active" href="#" data-bs-dismiss="modal"
+                                                            aria-label="Close"
+                                                            onclick="sendData({check_deffered_id: '<?= isset($_SESSION['check_deffered'][$i]['id']) ? addslashes($_SESSION['check_deffered'][$i]['id']) :  null ?>'})()">
+                                                            <span>Відкрити</span>
+                                                        </a>
 
-                                            <?php endif; ?>
-                                        </td>
-                                    </tr>
-                                    <?php endfor; ?>
+                                                    <?php endif; ?>
+                                                </td>
+                                            </tr>
+                                        <?php endfor; ?>
                                     <?php endif; ?>
                                 </tbody>
                             </table>
@@ -87,57 +87,59 @@
                 </div>
             </div>
 
-            <div class="modal-footer">
-                <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    Відмінити
-                </button> -->
-                <!-- <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="getBarcodeInput()">
-                        Продовжити
-                    </button> -->
+            <div class="modal-footer justify-content-center d-none">
+                <div class="col-3">К-во Сторінок:<span id="quantityPagesListChecks"></span></div>
+                <div class="pagination col-5 justify-content-center">
+                    <button id="prevPage" class="btn btn-secondary">← Назад</button>
+                    <input type="text" id="currentPage" placeholder="1" onclick="this.select()" value="<?= isset($page) ? $page : 1
+                                                                                                        ?>">
+                    <button id="nextPage" class="btn btn-secondary">Вперед →</button>
+                </div>
+                <div class="col-3 d-flex justify-content-end" id="errorLoadPage"></div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-    let tableBody = document.getElementById("catalogRows");
-    //console.log(tableBody);
+    document.addEventListener("DOMContentLoaded", () => {
+        let tableBody = document.getElementById("catalogRows");
+        //console.log(tableBody);
 
-    if (tableBody) {
-        let rows = tableBody.querySelectorAll("tr");
+        if (tableBody) {
+            let rows = tableBody.querySelectorAll("tr");
 
-        rows.forEach((el, i) => el.addEventListener("click", () => {
-            rows.forEach(row => row.classList.remove("active"));
-            el.setAttribute("id", `row-${i}`);
+            rows.forEach((el, i) => el.addEventListener("click", () => {
+                rows.forEach(row => row.classList.remove("active"));
+                el.setAttribute("id", `row-${i}`);
 
-            el.classList.add("active");
+                el.classList.add("active");
 
-            el.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-            });
+                el.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
 
-            if (el.classList.contains("active")) {
-                el.setAttribute('tabindex', '-1');
-                el.focus();
-                el.removeAttribute('tabindex');
+                if (el.classList.contains("active")) {
+                    el.setAttribute('tabindex', '-1');
+                    el.focus();
+                    el.removeAttribute('tabindex');
+                }
+            }));
+
+
+
+            function autoClickRandomRow() {
+                if (rows.length === 0) return;
+
+                let randomIndex = Math.floor(Math.random() * rows.length);
+                rows[randomIndex].click();
+
+                //console.log(`Auto-clicked row index: ${randomIndex}`);
             }
-        }));
 
-
-
-        function autoClickRandomRow() {
-            if (rows.length === 0) return;
-
-            let randomIndex = Math.floor(Math.random() * rows.length);
-            rows[randomIndex].click();
-
-            //console.log(`Auto-clicked row index: ${randomIndex}`);
+            //setInterval(autoClickRandomRow, 2000);
         }
 
-        //setInterval(autoClickRandomRow, 2000);
-    }
-
-})
+    })
 </script>

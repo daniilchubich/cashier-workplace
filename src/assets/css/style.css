@@ -264,7 +264,9 @@ body {
   color: #949090;
 }
 
-.content-single .single-bottom input {
+.content-single .single-bottom input,
+#ModalDefferedChecks .modal-footer input,
+#ModalChecks .modal-footer input {
   padding: 2px 5px;
   text-align: right;
   border: 2px solid #dfdbdb;
@@ -410,7 +412,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 50px;
+  padding: 10px;
   background-color: #d7f3d9;
 }
 

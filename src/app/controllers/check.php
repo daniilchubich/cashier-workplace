@@ -98,11 +98,11 @@ if (isset($_POST['check_action'])) {
     unset($_SESSION['check_deffered']);
     //tt($_SESSION['check_deffered']);
     unset($_SESSION['check_list']);
-    //echo "123";
+    //var_dump($_SESSION['total_sale']);
     if (isset($_SESSION['cart'])) {
         $cheсk_status_id = isset($_POST['otlozhen']) ? 1 : (isset($_POST['proveden']) ? 2 : 0);
         $cheсk_number = str_pad(countStringInTable('doc_check_main') + 1, 7, "0", STR_PAD_LEFT);
-        isset($_SESSION['total_sale']) && isset($_SESSION['total_amount']) ? $sum = $_SESSION['total_amount'] - $_SESSION['total_sale'] : $sum = $_SESSION['total_amount'];
+        isset($_SESSION['total_sale']) && isset($_SESSION['total_amount']) ? $sum = $_SESSION['total_amount'] - (float)$_SESSION['total_sale'] : $sum = $_SESSION['total_amount'];
 
         $params_check_main = [
             'cheсk_number' => $cheсk_number,
@@ -113,15 +113,19 @@ if (isset($_POST['check_action'])) {
             'discount_id_bas' => isset($_SESSION['discount']['id_bas']) ? $_SESSION['discount']['id_bas'] : 0,
             'doc_sum' => isset($_SESSION['total_amount']) ? $sum : 0
         ];
-
-        $id_check_name = insert('doc_check_main', $params_check_main);
-        $_SESSION['check_deffered'] = selectAllCheck(['check_status_id' => 1]);
-        $_SESSION['check_list'] = selectAllCheck();
+        if (isset($_SESSION['check_main_id'])) {
+            $id_check_name = $_SESSION['check_main_id'];
+            update('doc_check_main', (int)$_SESSION['check_main_id'], $params_check_main);
+        } else {
+            $id_check_name = insert('doc_check_main', $params_check_main);
+        }
+        //$_SESSION['check_deffered'] = selectAllCheck(['check_status_id' => 1]);
+        //$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
         //tt($_SESSION['check_list']);
         if (isset($_SESSION['cart'])) {
             for ($i = 0; $i < count($_SESSION['cart']); $i++) {
                 $sum = $_SESSION['cart'][$i]['price'] * $_SESSION['cart'][$i]['quantity'];
-                if (isset($_SESSION['discount'])) {
+                if (isset($_SESSION['discount']) && (float)$_SESSION['discount'] > 0) {
                     $sum_discount = round($sum * $_SESSION['discount']['percent_discount'] / 100, 2);
                 } else {
                     $sum_discount = 0;
@@ -129,7 +133,7 @@ if (isset($_POST['check_action'])) {
                 $sum_without_discount =  $sum - $sum_discount;
 
                 $params_check_product = [
-                    'check_id' => $id_check_name,
+                    'check_id' => (int)$id_check_name,
                     'product_id_bas' => $_SESSION['cart'][$i]['product_id_bas'],
                     //'characteristic_id' => $_SESSION['cart']['characteristic_id'],
                     'price' => $_SESSION['cart'][$i]['price'],
@@ -157,10 +161,16 @@ if (isset($_POST['check_action'])) {
 
 if (isset($_POST['check_deffered_id'])) {
     $check_deffered = selectOne('doc_check_main', ['id' => $_POST['check_deffered_id']]);
-    //tt($check_deffered);
-    $discount = selectOne('ref_discounts', ['id_bas' => $check_deffered['discount_id_bas']]);
-    $_SESSION['discount'] = isset($discount) ? $discount : null;
+    $_SESSION['check_main_id'] =  $check_deffered['id'];
+    //tt($check_deffered['discount_id_bas']);
+    if ($check_deffered['discount_id_bas'] != 0) {
+        $dis = selectOne('ref_discounts', ['id_bas' => $check_deffered['discount_id_bas']]);
+    }
+    $_SESSION['discount'] = isset($dis) ? $dis : null;
     $_SESSION['cart'] = selectAllCheckProducts($_POST['check_deffered_id']);
+    for ($i = 0; $i < count($_SESSION['cart']); $i++) {
+        delete('doc_check_products', $_SESSION['cart'][$i]['id']);
+    }
     //tt($_SESSION['cart']);
     // Додаємо продукт до кошика
     //$string_id = updateOrAddSessionCart($_SESSION['cart'], $product);
