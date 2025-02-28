@@ -1,4 +1,6 @@
-<?php include $_SERVER["DOCUMENT_ROOT"] . "/app/database/db.php";
+<?php
+
+include $_SERVER["DOCUMENT_ROOT"] . "/app/database/db.php";
 function getAddProducts()
 {
 

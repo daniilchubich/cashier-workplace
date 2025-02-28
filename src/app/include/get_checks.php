@@ -1,4 +1,5 @@
 <?php
+
 include $_SERVER["DOCUMENT_ROOT"] . "/app/database/db.php"; // Подключаем базу данных
 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;

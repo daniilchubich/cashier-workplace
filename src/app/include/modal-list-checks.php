@@ -61,7 +61,7 @@
                                                 <td><?= isset($_SESSION['check_list'][$i]['phone_number']) ? '+380' . $_SESSION['check_list'][$i]['phone_number'] : '' ?>
                                                 </td>
                                                 <td><?= $_SESSION['check_list'][$i]['name'] ?></td>
-                                                <td><?= $_SESSION['check_list'][$i]['check_status_id'] == 1 ? 'Відкладений' :  'Пробитий' ?>
+                                                <td><?= $_SESSION['check_list'][$i]['check_status_id'] == 1 ? 'Відкладений' : 'Пробитий' ?>
                                                 </td>
                                                 <td><?= $_SESSION['check_list'][$i]['doc_sum'] ?> грн.</td>
                                             </tr>

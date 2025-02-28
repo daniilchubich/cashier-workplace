@@ -1,4 +1,5 @@
 <?php
+
 include $_SERVER["DOCUMENT_ROOT"] . "/app/database/db.php";
 //$test = "123";
 // Проверка входных данных
@@ -18,11 +19,15 @@ if (isset($_POST['id_bas']) && isset($_POST['level']) && $_POST['level'] >= 0) {
 
 function renderCatalog($level = 0, $parentId = null)
 {
-    if (empty($_SESSION['catalog_tree'][$level])) return;
+    if (empty($_SESSION['catalog_tree'][$level])) {
+        return;
+    }
     echo "<ul>";
 
     foreach ($_SESSION['catalog_tree'][$level] as $category) {
-        if ($parentId !== null && $category['parent_id_bas'] != $parentId) continue;
+        if ($parentId !== null && $category['parent_id_bas'] != $parentId) {
+            continue;
+        }
         echo "<li style='font-size: small;' onclick=\"openCatalog('{$category['id_bas']}', {$category['level']})\">";
         echo htmlspecialchars($category['name']);
         echo "</li>";

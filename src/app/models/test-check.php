@@ -1,4 +1,5 @@
 <?php
+
 include $_SERVER["DOCUMENT_ROOT"] . "/app/controllers/check.php";
 
 $products = selectAll('ref_products'); // Получаем все продукты

@@ -24,7 +24,7 @@ if (isset($_POST['type'])) {
             </td>
             <td><?= $check_list[$i]['name'] ?></td>
             <?php if (empty($_POST['check_status_id'])): ?>
-                <td><?= $check_list[$i]['check_status_id'] == 1 ? 'Відкладений' :  'Пробитий' ?>
+                <td><?= $check_list[$i]['check_status_id'] == 1 ? 'Відкладений' : 'Пробитий' ?>
                 </td>
             <?php endif ?>
             <td><?= $check_list[$i]['doc_sum'] ?> грн.</td>
@@ -32,7 +32,7 @@ if (isset($_POST['type'])) {
                 <td>
                     <?php if (empty($_SESSION['cart'])): ?>
                         <a class="navbar-item nav-link active" href="#" data-bs-dismiss="modal" aria-label="Close"
-                            onclick="sendData({check_deffered_id: '<?= isset($check_list[$i]['id']) ? addslashes($check_list[$i]['id']) :  null ?>'})()">
+                            onclick="sendData({check_deffered_id: '<?= isset($check_list[$i]['id']) ? addslashes($check_list[$i]['id']) : null ?>'})()">
                             <span>Відкрити</span>
                         </a>
 

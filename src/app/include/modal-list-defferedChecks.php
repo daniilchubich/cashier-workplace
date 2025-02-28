@@ -70,7 +70,7 @@
                                                 <td><?php if (empty($_SESSION['cart'])): ?>
                                                         <a class="navbar-item nav-link active" href="#" data-bs-dismiss="modal"
                                                             aria-label="Close"
-                                                            onclick="sendData({check_deffered_id: '<?= isset($_SESSION['check_deffered'][$i]['id']) ? addslashes($_SESSION['check_deffered'][$i]['id']) :  null ?>'})()">
+                                                            onclick="sendData({check_deffered_id: '<?= isset($_SESSION['check_deffered'][$i]['id']) ? addslashes($_SESSION['check_deffered'][$i]['id']) : null ?>'})()">
                                                             <span>Відкрити</span>
                                                         </a>
 
@@ -92,7 +92,7 @@
                 <div class="pagination col-5 justify-content-center">
                     <button id="prevPage" class="btn btn-secondary">← Назад</button>
                     <input type="text" id="currentPage" placeholder="1" onclick="this.select()" value="<?= isset($page) ? $page : 1
-                                                                                                        ?>">
+?>">
                     <button id="nextPage" class="btn btn-secondary">Вперед →</button>
                 </div>
                 <div class="col-3 d-flex justify-content-end" id="errorLoadPage"></div>

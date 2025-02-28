@@ -1,4 +1,6 @@
-<?php include $_SERVER["DOCUMENT_ROOT"] . "/app/controllers/functions.php";
+<?php
+
+include $_SERVER["DOCUMENT_ROOT"] . "/app/controllers/functions.php";
 getAddProducts();
 getAddDiscounts();
 getAddClassifier();

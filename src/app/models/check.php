@@ -8,7 +8,7 @@ include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-list-checks.php";
 <div class="wrapper">
     <!-- Navbar start -->
     <?php include $_SERVER['DOCUMENT_ROOT'] . "/app/include/navbar.php"
-    ?>
+?>
     <!-- Navbar end -->
 
     <div id="main-content">
@@ -17,10 +17,10 @@ include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-list-checks.php";
             <div class="content-single">
                 <div class="single-up">
                     <?php
-                    if (isset($_SESSION['discount']['phone_number'])) {
-                        echo '+38' . $_SESSION['discount']['phone_number'] . "    " . $_SESSION['discount']['first_name'] . " " . $_SESSION['discount']['second_name'] . ". Відсоток знижки: " . $_SESSION['discount']['percent_discount'] . "%</br>";
-                    }
-                    ?>
+                if (isset($_SESSION['discount']['phone_number'])) {
+                    echo '+38' . $_SESSION['discount']['phone_number'] . "    " . $_SESSION['discount']['first_name'] . " " . $_SESSION['discount']['second_name'] . ". Відсоток знижки: " . $_SESSION['discount']['percent_discount'] . "%</br>";
+                }
+?>
 
                 </div>
                 <hr style="width: 95%; display: block; margin: 0 auto; opacity: 0.2;">
@@ -29,7 +29,7 @@ include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-list-checks.php";
                         class="name"><?= isset($string_id) && isset($_SESSION['cart'][$string_id]['full_name']) ? $_SESSION['cart'][$string_id]['full_name'] : 'Відскануйте товар' ?></span>
                     <span class="btn-trash-wrapper">
                         <i class="bi bi-trash"
-                            onclick="sendData({deleteStringInCheck: '<?= isset($string_id) ? addslashes($string_id) :  null ?>'})"></i>
+                            onclick="sendData({deleteStringInCheck: '<?= isset($string_id) ? addslashes($string_id) : null ?>'})"></i>
                     </span>
                 </div>
                 <div class="single-bottom">
@@ -43,8 +43,8 @@ include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-list-checks.php";
                         <span class="weight-minus"
                             onclick="adjustCounter('minus', `<?= isset($string_id) && isset($_SESSION['cart'][$string_id]['price']) ? $_SESSION['cart'][$string_id]['product_id_bas'] : 0 ?>`)">-</span>
                         <input type="text" placeholder="1" onclick="this.select()" value="<?php if (isset($string_id)) {
-                                                                                                echo isset($string_id) && isset($_SESSION['cart'][$string_id]['quantity']) ? $_SESSION['cart'][$string_id]['quantity'] : 1;
-                                                                                            } ?>"
+                            echo isset($string_id) && isset($_SESSION['cart'][$string_id]['quantity']) ? $_SESSION['cart'][$string_id]['quantity'] : 1;
+                        } ?>"
                             oninput=" adjustCounter('input',
                             `<?= isset($string_id) && isset($_SESSION['cart'][$string_id]['price']) ? $_SESSION['cart'][$string_id]['product_id_bas'] : 0 ?>`)">
                         <span class="weight-plus"
@@ -56,17 +56,17 @@ include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-list-checks.php";
                     <div class="discount">
                         <span class="text">Знижка</span>
                         <input type="text" placeholder="0,00" value="<?= isset($_SESSION['discount']['percent_discount']) ? $_SESSION['discount']['percent_discount'] : 0;
-                                                                        ?>" disabled>
+?>" disabled>
                         <i class="bi bi-percent discount-percent"></i>
                         <!-- <span class="choose-btn">грн.</span> -->
                     </div>
                     <div class="sum">
                         <span>Усього:</span>
                         <input type="text" placeholder="0" disabled value="<?php if (isset($string_id) && isset($_SESSION['cart'])) {
-                                                                                echo $_SESSION['cart'][$string_id]['price'] * $_SESSION['cart'][$string_id]['quantity'];
-                                                                            } else {
-                                                                                echo "0";
-                                                                            } ?>">
+                            echo $_SESSION['cart'][$string_id]['price'] * $_SESSION['cart'][$string_id]['quantity'];
+                        } else {
+                            echo "0";
+                        } ?>">
                     </div>
                 </div>
             </div>
@@ -90,7 +90,7 @@ include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-list-checks.php";
                             $_SESSION['total_sale'] = 0; ?>
                             <?php for ($i = 0; $i < count($_SESSION['cart']); $i++):  ?>
                                 <?php $_SESSION['total_amount'] =  $_SESSION['total_amount'] + $_SESSION['cart'][$i]['price'] * $_SESSION['cart'][$i]['quantity']; ?>
-                                <?php $_SESSION['total_sale'] = isset($_SESSION['discount']) && (float)$_SESSION['discount'] > 0 ?  $_SESSION['total_sale'] + round($_SESSION['cart'][$i]['price'] * $_SESSION['cart'][$i]['quantity'] / 100 * $_SESSION['discount']['percent_discount'], 2) : ''; ?>
+                                <?php $_SESSION['total_sale'] = isset($_SESSION['discount']) && (float)$_SESSION['discount'] > 0 ? $_SESSION['total_sale'] + round($_SESSION['cart'][$i]['price'] * $_SESSION['cart'][$i]['quantity'] / 100 * $_SESSION['discount']['percent_discount'], 2) : ''; ?>
                                 <?php if (isset($string_id) && $i == $string_id) {
                                     $active = 'active';
                                 } else {
@@ -103,7 +103,7 @@ include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-list-checks.php";
                                     <td id="quantity"><span><?= $_SESSION['cart'][$i]['quantity'] ?></span> шт.</td>
                                     <td id="percent_sale">
                                         <?= isset($_SESSION['discount']['percent_discount']) ? $_SESSION['discount']['percent_discount'] . "%" : '';
-                                        ?>
+                                ?>
                                     </td>
                                     <td id="sum_sale">
                                         <?= isset($_SESSION['discount']['percent_discount']) ? number_format(round($_SESSION['cart'][$i]['price'] * $_SESSION['cart'][$i]['quantity'] / 100 * $_SESSION['discount']['percent_discount'], 2), 2, '.', '') : '' ?>
@@ -121,7 +121,7 @@ include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-list-checks.php";
             </div>
 
             <!-- Modal -->
-            <?php //include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-input-barcode.php"; 
+            <?php //include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-input-barcode.php";
             ?>
         </div>
         <!-- Content end -->
@@ -132,13 +132,13 @@ include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-list-checks.php";
                 <div class="sidebar-row">
                     <span>Без знижки:</span>
                     <span class="text-end" id="no_discount"><?= isset($_SESSION['total_amount']) ?
-                                                                round($_SESSION['total_amount'], 2) : '0' ?>
+                                                        round($_SESSION['total_amount'], 2) : '0' ?>
                         грн.</span>
                 </div>
                 <div class="sidebar-row">
                     <span>Знижка:</span>
                     <span class="text-end" id="discount"><?= isset($_SESSION['total_sale']) ?
-                                                                round((float)$_SESSION['total_sale'], 2) : '0' ?>
+                                                        round((float)$_SESSION['total_sale'], 2) : '0' ?>
                         грн.</span>
                 </div>
 
@@ -196,12 +196,12 @@ include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-list-checks.php";
                             <span></span>
                         </div>
                     </div>
-                    <?php //if (isset($_SESSION['cart']) !== null): 
+                    <?php //if (isset($_SESSION['cart']) !== null):
                     ?>
                     <button onclick="checkAction('proveden')">
                         Пробити чек
                     </button>
-                    <?php //endif; 
+                    <?php //endif;
                     ?>
                 </div>
             </div>

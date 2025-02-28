@@ -26,11 +26,11 @@ include $_SERVER['DOCUMENT_ROOT'] . "/app/controllers/auth.php";
 <body>
     <?php
     include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-input-barcode.php";
-    include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-discont.php";
-    // include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-catalog.php";
-    // include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-list-checks.php";
-    // include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-list-defferedChecks.php";
-    ?>
+include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-discont.php";
+// include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-catalog.php";
+// include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-list-checks.php";
+// include $_SERVER['DOCUMENT_ROOT'] . "/app/include/modal-list-defferedChecks.php";
+?>
     <?php if (empty($_SESSION['work_shift'])): ?>
         <form action="index.php" method="POST">
             <input type="text" name="username" placeholder="Ваш Логін" class="form-control">

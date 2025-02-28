@@ -20,7 +20,7 @@ if (isset($_POST['id_bas'])) {
             <td><?= $catalog[$i]['name'] ?></td>
             <td>
                 <?= $catalog[$i]['price']
-                ?> грн.
+        ?> грн.
             </td>
             <td> відкрити </td>
         </tr>
